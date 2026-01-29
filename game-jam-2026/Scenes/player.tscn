@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://cbwo4ao02kqa8"]
+[gd_scene load_steps=7 format=3 uid="uid://cbwo4ao02kqa8"]
 
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_ucbdq"]
 [ext_resource type="Texture2D" uid="uid://bt8ufjqnf3b6i" path="res://PNGs/Player/Test/Back.png" id="1_xylwy"]
 [ext_resource type="Texture2D" uid="uid://dnqdodarnugws" path="res://PNGs/Player/Test/Forward.png" id="2_mc54d"]
 [ext_resource type="Texture2D" uid="uid://w0rbrb4umgqt" path="res://PNGs/Player/Test/Left.png" id="3_aw4kx"]
@@ -35,7 +36,14 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D"]
-collision_mask = 2
+collision_mask = 6
+script = ExtResource("1_ucbdq")
+
+[node name="BackgroundColor" type="ColorRect" parent="."]
+offset_left = -577.0
+offset_top = -328.0
+offset_right = 582.0
+offset_bottom = 329.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 7.5)
@@ -46,6 +54,20 @@ sprite_frames = SubResource("SpriteFrames_t37po")
 animation = &"idle"
 
 [node name="HUD" type="Camera2D" parent="."]
+
+[node name="GameOverLabel" type="Label" parent="HUD"]
+offset_left = -44.0
+offset_top = -82.0
+offset_right = 48.0
+offset_bottom = -59.0
+text = "GAME OVER"
+
+[node name="RetryButton" type="Button" parent="HUD"]
+offset_left = -41.0
+offset_top = 76.0
+offset_right = 41.0
+offset_bottom = 124.0
+text = "Retry"
 
 [node name="EnemyCollisionDetectors" type="Node2D" parent="."]
 
@@ -67,3 +89,8 @@ collision_mask = 4
 rotation = 1.5708
 scale = Vector2(1, 0.4)
 collision_mask = 4
+
+[node name="InvincibilityTimer" type="Timer" parent="."]
+
+[connection signal="pressed" from="HUD/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]
