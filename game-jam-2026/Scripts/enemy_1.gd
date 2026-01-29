@@ -7,10 +7,12 @@ var wait = false
 var stop = false
 var left
 var right
+var health
 
 @onready var player = get_node("../Player")
 
 func _ready():
+	health = 100
 	velocity.x = speed
 	$AnimatedSprite2D.play("idle")
 

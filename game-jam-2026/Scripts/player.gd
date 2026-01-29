@@ -2,6 +2,8 @@ extends CharacterBody2D
 
 var playerAlive = true
 var invulnerable = false
+var isAttacking = false
+var playerIsDamaged = false
 var playerHealth: int = 5;
 const speed = 300.0
 
@@ -10,12 +12,13 @@ signal restart
 
 func _ready():
 	$BackgroundColor.modulate = Color(0,0,0,0)
+	$Attack.hide()
 	$HUD/GameOverLabel.hide()
 	$HUD/RetryButton.hide()
 	$AnimatedSprite2D.play("idle")
 
 func _physics_process(delta: float) -> void:
-	if playerAlive:
+	if playerAlive and !playerIsDamaged:
 		# Get the input direction and handle the movement/deceleration.
 		# As good practice, you should replace UI actions with custom gameplay actions.
 		var direction := Input.get_axis("left", "right")
@@ -27,10 +30,14 @@ func _physics_process(delta: float) -> void:
 		else:
 			if Input.is_action_pressed("right"):
 				$AnimatedSprite2D.flip_h = true
+				#$Attack.flip_h = not $Attack.flip_h
+				#$AttackDetector.scale.x *= -1
 				$AnimatedSprite2D.play("walk_sideways")
 			
 			elif Input.is_action_pressed("left"):
 				$AnimatedSprite2D.flip_h = false
+				#$Attack.flip_h = not $Attack.flip_h
+				#$AttackDetector.scale.x *= -1
 				$AnimatedSprite2D.play("walk_sideways")
 		
 			if Input.is_action_pressed("up"):
@@ -41,6 +48,17 @@ func _physics_process(delta: float) -> void:
 				$AnimatedSprite2D.play("idle")
 			
 			velocity.x = direction * speed
+			
+		if Input.is_action_pressed("attack"):
+			$Attack.show()
+			$AttackTimer.start()
+			if $AttackDetector.is_colliding() and ($AttackDetector.get_collider() != null) and !isAttacking:
+				isAttacking = true
+				var collider = $AttackDetector.get_collider()
+				if collider.is_in_group("enemy"):
+					collider.health -= 25
+					print(collider.health)
+				
 	
 		for detector in $EnemyCollisionDetectors.get_children():
 				# Needed the "(detector.get_collider() != null)" or else it crashes after deleting the collider
@@ -56,6 +74,7 @@ func _physics_process(delta: float) -> void:
 func playerDamaged(enemy, delta):
 	# Damage
 	playerHealth -= 1
+	playerIsDamaged = true
 	invulnerable = true
 	knockback(enemy, delta)
 	
@@ -96,6 +115,7 @@ func knockback(enemy, delta):
 ## Detects when the timer for the invincibility frames ends
 func _on_invincibility_timer_timeout() -> void:
 	# Sets player model back to opaque
+	playerIsDamaged = false
 	modulate.a = 1
 	invulnerable = false
 	print("playerHealth = ", playerHealth)
@@ -105,3 +125,8 @@ func _on_invincibility_timer_timeout() -> void:
 
 func _on_retry_button_pressed() -> void:
 	restart.emit()
+
+
+func _on_attack_timer_timeout() -> void:
+	isAttacking = false
+	$Attack.hide()
