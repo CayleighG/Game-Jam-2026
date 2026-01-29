@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://cbwo4ao02kqa8"]
+
+[ext_resource type="Texture2D" uid="uid://bt8ufjqnf3b6i" path="res://PNGs/Player/Test/Back.png" id="1_xylwy"]
+[ext_resource type="Texture2D" uid="uid://dnqdodarnugws" path="res://PNGs/Player/Test/Forward.png" id="2_mc54d"]
+[ext_resource type="Texture2D" uid="uid://w0rbrb4umgqt" path="res://PNGs/Player/Test/Left.png" id="3_aw4kx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bnr50"]
+size = Vector2(33, 113)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_t37po"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_mc54d")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_xylwy")
+}],
+"loop": true,
+"name": &"walk_back",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_aw4kx")
+}],
+"loop": true,
+"name": &"walk_sideways",
+"speed": 5.0
+}]
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 7.5)
+shape = SubResource("RectangleShape2D_bnr50")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_t37po")
+animation = &"idle"
+
+[node name="HUD" type="Camera2D" parent="."]

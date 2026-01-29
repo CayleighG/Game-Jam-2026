@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://ca1dbpidcu7s7"]
+
+[ext_resource type="Script" path="res://Scenes/enemy_1.gd" id="1_ngogt"]
+[ext_resource type="Texture2D" uid="uid://cka5otlxh08po" path="res://PNGs/Enemies/enemy_1.png" id="1_wqs2n"]
+[ext_resource type="Texture2D" uid="uid://c40s2a0lt6mff" path="res://PNGs/Enemies/enemy_2.png" id="2_w883n"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbo0t"]
+size = Vector2(126, 115)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_up6cx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_wqs2n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_w883n")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="Enemy1" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_ngogt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 7.5)
+shape = SubResource("RectangleShape2D_lbo0t")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_up6cx")
+animation = &"idle"
+frame = 1
+frame_progress = 0.561229
+
+[node name="WallDetector" type="RayCast2D" parent="."]
+target_position = Vector2(-66, -1)
+collision_mask = 2
