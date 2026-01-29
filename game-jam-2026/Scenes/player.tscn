@@ -46,3 +46,24 @@ sprite_frames = SubResource("SpriteFrames_t37po")
 animation = &"idle"
 
 [node name="HUD" type="Camera2D" parent="."]
+
+[node name="EnemyCollisionDetectors" type="Node2D" parent="."]
+
+[node name="Detector1" type="RayCast2D" parent="EnemyCollisionDetectors"]
+scale = Vector2(1.4, 1.4)
+collision_mask = 4
+
+[node name="Detector2" type="RayCast2D" parent="EnemyCollisionDetectors"]
+rotation = -1.5708
+scale = Vector2(1, 0.4)
+collision_mask = 4
+
+[node name="Detector3" type="RayCast2D" parent="EnemyCollisionDetectors"]
+rotation = 3.14159
+scale = Vector2(1, 1.1)
+collision_mask = 4
+
+[node name="Detector4" type="RayCast2D" parent="EnemyCollisionDetectors"]
+rotation = 1.5708
+scale = Vector2(1, 0.4)
+collision_mask = 4

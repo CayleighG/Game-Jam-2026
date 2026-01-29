@@ -39,3 +39,67 @@ frame_progress = 0.561229
 [node name="WallDetector" type="RayCast2D" parent="."]
 target_position = Vector2(-66, -1)
 collision_mask = 2
+
+[node name="View" type="Node2D" parent="."]
+
+[node name="RayCast2D" type="RayCast2D" parent="View"]
+target_position = Vector2(-171, -424)
+
+[node name="RayCast2D2" type="RayCast2D" parent="View"]
+target_position = Vector2(-402, -301)
+
+[node name="RayCast2D3" type="RayCast2D" parent="View"]
+target_position = Vector2(-506, 2)
+
+[node name="RayCast2D4" type="RayCast2D" parent="View"]
+target_position = Vector2(-459, 174)
+
+[node name="RayCast2D5" type="RayCast2D" parent="View"]
+target_position = Vector2(-251, 387)
+
+[node name="RayCast2D6" type="RayCast2D" parent="View"]
+target_position = Vector2(-387, 277)
+
+[node name="RayCast2D7" type="RayCast2D" parent="View"]
+target_position = Vector2(-486, 82)
+
+[node name="RayCast2D8" type="RayCast2D" parent="View"]
+target_position = Vector2(-482, -151)
+
+[node name="RayCast2D9" type="RayCast2D" parent="View"]
+target_position = Vector2(-285, -380)
+
+[node name="RayCast2D10" type="RayCast2D" parent="View"]
+target_position = Vector2(-228, -403)
+
+[node name="RayCast2D11" type="RayCast2D" parent="View"]
+target_position = Vector2(-343, -348)
+
+[node name="RayCast2D12" type="RayCast2D" parent="View"]
+target_position = Vector2(-443, -231)
+
+[node name="RayCast2D13" type="RayCast2D" parent="View"]
+target_position = Vector2(-490, -76)
+
+[node name="RayCast2D14" type="RayCast2D" parent="View"]
+target_position = Vector2(-496, 43)
+
+[node name="RayCast2D15" type="RayCast2D" parent="View"]
+target_position = Vector2(-467, 128)
+
+[node name="RayCast2D16" type="RayCast2D" parent="View"]
+target_position = Vector2(-422, 224)
+
+[node name="RayCast2D17" type="RayCast2D" parent="View"]
+target_position = Vector2(-326, 337)
+
+[node name="PursuitTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="DetectTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="PursuitTimer" to="." method="_on_pursuit_timer_timeout"]
+[connection signal="timeout" from="DetectTimer" to="." method="_on_detect_timer_timeout"]

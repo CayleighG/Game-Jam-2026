@@ -1,8 +1,10 @@
 extends CharacterBody2D
 
-var playerAlive = true;
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
+var playerAlive = true
+var invulnerable = false
+var playerHealth: int = 5;
+const speed = 300.0
+
 
 func _ready():
 	$AnimatedSprite2D.play("idle")
@@ -28,13 +30,13 @@ func _physics_process(delta: float) -> void:
 				$AnimatedSprite2D.play("walk_sideways")
 		
 			if Input.is_action_pressed("up"):
-				velocity.y = -SPEED
+				velocity.y = -speed
 				$AnimatedSprite2D.play("walk_back")
 			elif Input.is_action_pressed("down"):
-				velocity.y = SPEED
+				velocity.y = speed
 				$AnimatedSprite2D.play("idle")
 			
-			velocity.x = direction * SPEED
+			velocity.x = direction * speed
 	
 	# Add the gravity.
 	#if not is_on_floor():
