@@ -15,6 +15,8 @@ func _ready():
 	health = 100
 	velocity.x = speed
 	$AnimatedSprite2D.play("idle")
+	$HealthBar.hide()
+	$HealthBarBackground.hide()
 
 func _physics_process(delta: float) -> void:
 	if (!stop):
@@ -46,11 +48,11 @@ func _physics_process(delta: float) -> void:
 		# Timer where the player has time to get out of the enemy's view
 		# Enemy will rush them if they are still in view when the timer ends
 		for detector in $View.get_children():
-			if detector.is_colliding() and (detector.get_collider() != null) and !wait:
+			if detector.is_colliding() and (detector.get_collider() != null) and !wait and !player.invisible:
 					wait = true
 					$DetectTimer.start()
 	
-		if pursuit:
+		if pursuit and !player.invisible:
 			# Rotating the detectors so the player is always in the enemy's "view"
 			for detector in $View.get_children():
 				detector.rotation = 135;
@@ -72,6 +74,17 @@ func _physics_process(delta: float) -> void:
 func player_death():
 	stop = true
 	$AnimatedSprite2D.stop()
+	
+func isDamaged():
+	health -= 25
+	print("Enemy Health: ", health)
+	$HealthBar.show()
+	$HealthBarBackground.show()
+	if $HealthBar.size.x > 0:
+		$HealthBar.size.x -= 30
+	if health == 0:
+		print("Deleting enemy")
+		queue_free()
 
 func _on_pursuit_timer_timeout() -> void:
 	pursuit = false
@@ -91,7 +104,7 @@ func _on_detect_timer_timeout() -> void:
 	print("Starting the detect timer")
 	wait = false
 	for detector in $View.get_children():
-		if detector.is_colliding() and (detector.get_collider() != null):
+		if detector.is_colliding() and (detector.get_collider() != null) and !player.invisible:
 				pursuit = true
 				$PursuitTimer.start()
 				print("Now pursuing!")

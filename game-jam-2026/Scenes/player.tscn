@@ -81,6 +81,20 @@ offset_right = 41.0
 offset_bottom = 124.0
 text = "Retry"
 
+[node name="InvisBarBackground" type="ColorRect" parent="HUD"]
+offset_left = -567.0
+offset_top = 248.0
+offset_right = -245.0
+offset_bottom = 314.0
+color = Color(0, 0, 0, 1)
+
+[node name="InvisBar" type="ColorRect" parent="HUD"]
+offset_left = -556.0
+offset_top = 261.0
+offset_right = -256.0
+offset_bottom = 301.0
+color = Color(0, 0.686275, 0, 1)
+
 [node name="EnemyCollisionDetectors" type="Node2D" parent="."]
 
 [node name="Detector1" type="RayCast2D" parent="EnemyCollisionDetectors"]
@@ -103,7 +117,7 @@ scale = Vector2(1, 0.4)
 collision_mask = 4
 
 [node name="AttackDetector" type="RayCast2D" parent="."]
-target_position = Vector2(-56, 0)
+target_position = Vector2(-80, 0)
 collision_mask = 4
 
 [node name="Attack" type="AnimatedSprite2D" parent="."]
@@ -116,6 +130,11 @@ sprite_frames = SubResource("SpriteFrames_ursaa")
 [node name="AttackTimer" type="Timer" parent="."]
 wait_time = 0.5
 
+[node name="InvisTimer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
 [connection signal="pressed" from="HUD/RetryButton" to="." method="_on_retry_button_pressed"]
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="InvisTimer" to="." method="_on_invis_timer_timeout"]

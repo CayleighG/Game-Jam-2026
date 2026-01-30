@@ -2,6 +2,9 @@ extends CharacterBody2D
 
 var playerAlive = true
 var invulnerable = false
+var invisible
+var invisBarCharge: int = 100
+var invisTimerRunning = false
 var isAttacking = false
 var playerIsDamaged = false
 var playerHealth: int = 5;
@@ -11,6 +14,7 @@ signal playerDeath
 signal restart
 
 func _ready():
+	invisible = false
 	$BackgroundColor.modulate = Color(0,0,0,0)
 	$Attack.hide()
 	$HUD/GameOverLabel.hide()
@@ -32,32 +36,63 @@ func _physics_process(delta: float) -> void:
 				$AnimatedSprite2D.flip_h = true
 				#$Attack.flip_h = not $Attack.flip_h
 				#$AttackDetector.scale.x *= -1
+				$AttackDetector.look_at(Vector2(position.x - 50, position.y))
+				$AttackDetector.scale.x = 1
 				$AnimatedSprite2D.play("walk_sideways")
 			
 			elif Input.is_action_pressed("left"):
 				$AnimatedSprite2D.flip_h = false
 				#$Attack.flip_h = not $Attack.flip_h
-				#$AttackDetector.scale.x *= -1
+				$AttackDetector.rotation = 0
+				$AttackDetector.scale.x = 1
 				$AnimatedSprite2D.play("walk_sideways")
 		
 			if Input.is_action_pressed("up"):
 				velocity.y = -speed
+				$AttackDetector.look_at(Vector2(position.x, position.y + 50))
+				$AttackDetector.scale.x = 1.5
 				$AnimatedSprite2D.play("walk_back")
 			elif Input.is_action_pressed("down"):
 				velocity.y = speed
+				$AttackDetector.look_at(Vector2(position.x, position.y - 50))
+				$AttackDetector.scale.x = 1.5
 				$AnimatedSprite2D.play("idle")
+			else:
+				velocity.y = 0
 			
 			velocity.x = direction * speed
+		
+		# Invisibility
+		if Input.is_action_pressed("invisibility") and invisBarCharge == 100:
+			if !invisible:
+				print("Changinging invisibility to true")
+				invisible = true
+				$AnimatedSprite2D.modulate.a = 0.1
+			
+		if invisible:
+			if !invisTimerRunning:
+				invisTimerRunning = true
+				$InvisTimer.start()
+		else:
+			if invisBarCharge < 100 and !invisTimerRunning:
+				invisTimerRunning = true
+				$InvisTimer.start()
 			
 		if Input.is_action_pressed("attack"):
+			# Can't stay invisible while attacking
+			if invisible:
+				invisible = false
+				$AnimatedSprite2D.modulate.a = 1
+				invisTimerRunning = false
+				$InvisTimer.stop()
 			$Attack.show()
 			$AttackTimer.start()
 			if $AttackDetector.is_colliding() and ($AttackDetector.get_collider() != null) and !isAttacking:
 				isAttacking = true
 				var collider = $AttackDetector.get_collider()
 				if collider.is_in_group("enemy"):
-					collider.health -= 25
-					print(collider.health)
+					collider.isDamaged()
+					#print(collider.health)
 				
 	
 		for detector in $EnemyCollisionDetectors.get_children():
@@ -70,6 +105,9 @@ func _physics_process(delta: float) -> void:
 							playerDamaged(collider, delta)
 
 		move_and_slide()
+		
+	elif playerAlive and playerDamaged:
+		invisible = false
 	
 func playerDamaged(enemy, delta):
 	# Damage
@@ -130,3 +168,21 @@ func _on_retry_button_pressed() -> void:
 func _on_attack_timer_timeout() -> void:
 	isAttacking = false
 	$Attack.hide()
+
+
+func _on_invis_timer_timeout() -> void:
+	invisTimerRunning = false
+	if invisible:
+		if invisBarCharge > 0:
+			print(invisBarCharge)
+			invisBarCharge -= 1;
+			$HUD/InvisBar.size.x -= 3
+		else:
+			print("Not invisible")
+			invisible = false
+			$AnimatedSprite2D.modulate.a = 1
+	else:
+		invisBarCharge += 1
+		$HUD/InvisBar.size.x += 3
+		print(invisBarCharge)
+		
