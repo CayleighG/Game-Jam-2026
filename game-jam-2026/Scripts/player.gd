@@ -9,6 +9,10 @@ var isAttacking = false
 var playerHealth: int = 5;
 const speed = 300.0
 
+var armaMask = false
+var bearMask = false
+var fishMask = false
+
 signal playerDeath
 signal restart
 
@@ -18,6 +22,8 @@ func _ready():
 	$Attack.hide()
 	$HUD/GameOverLabel.hide()
 	$HUD/RetryButton.hide()
+	$HUD/Masks/FirstMaskSprite.play("idle")
+	$HUD/Masks/SecondMaskSprite.play("idle")
 	$AnimatedSprite2D.play("idle")
 
 func _physics_process(delta: float) -> void:
@@ -34,6 +40,7 @@ func _physics_process(delta: float) -> void:
 			global_position.y += 100
 		
 	if playerAlive:
+		checkMask()
 		# Get the input direction and handle the movement/deceleration.
 		# As good practice, you should replace UI actions with custom gameplay actions.
 		var direction := Input.get_axis("left", "right")
@@ -133,7 +140,7 @@ func playerDamaged(enemy, delta):
 	
 	if (playerHealth > 0):
 		# Turns player opacity to 0.5
-		modulate.a = 0.5
+		$AnimatedSprite2D.modulate.a = 0.5
 		$InvincibilityTimer.start()
 	
 	else:
@@ -167,10 +174,15 @@ func knockback(enemy, delta):
 	
 	velocity = Vector2(xVel, yVel)
 
+func checkMask():
+	if armaMask:
+		$HUD/Masks/FirstMaskSprite.show()
+		$HUD/Masks/FirstMaskSprite.play("armadillo")
+
 ## Detects when the timer for the invincibility frames ends
 func _on_invincibility_timer_timeout() -> void:
 	# Sets player model back to opaque
-	modulate.a = 1
+	$AnimatedSprite2D.modulate.a = 1
 	invulnerable = false
 	print("playerHealth = ", playerHealth)
 	# Sets the animation of the health bar

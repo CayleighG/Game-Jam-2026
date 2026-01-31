@@ -1,10 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://cbwo4ao02kqa8"]
+[gd_scene load_steps=14 format=3 uid="uid://cbwo4ao02kqa8"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_ucbdq"]
 [ext_resource type="Texture2D" uid="uid://bt8ufjqnf3b6i" path="res://PNGs/Player/Test/Back.png" id="1_xylwy"]
 [ext_resource type="Texture2D" uid="uid://dnqdodarnugws" path="res://PNGs/Player/Test/Forward.png" id="2_mc54d"]
 [ext_resource type="Texture2D" uid="uid://w0rbrb4umgqt" path="res://PNGs/Player/Test/Left.png" id="3_aw4kx"]
+[ext_resource type="Texture2D" uid="uid://bt4vk7x5ijs8f" path="res://PNGs/Masks/armadillo_mask.png" id="5_gpn4u"]
 [ext_resource type="Texture2D" uid="uid://bxq80od4ni31x" path="res://PNGs/Player/Test/Swipe.png" id="5_tmlmh"]
+[ext_resource type="Texture2D" uid="uid://b6rkftd4vcdfb" path="res://PNGs/Masks/bear_mask.png" id="6_xqkag"]
+[ext_resource type="Texture2D" uid="uid://6ktu1a507002" path="res://PNGs/Masks/fish_mask.png" id="7_wtpk4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bnr50"]
 size = Vector2(33, 113)
@@ -34,6 +37,70 @@ animations = [{
 "loop": true,
 "name": &"walk_sideways",
 "speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ircl7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_gpn4u")
+}],
+"loop": true,
+"name": &"armadillo",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_xqkag")
+}],
+"loop": true,
+"name": &"bear",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_wtpk4")
+}],
+"loop": true,
+"name": &"fish",
+"speed": 0.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"idle",
+"speed": 0.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_no8sr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_gpn4u")
+}],
+"loop": true,
+"name": &"armadillo",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_xqkag")
+}],
+"loop": true,
+"name": &"bear",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_wtpk4")
+}],
+"loop": true,
+"name": &"fish",
+"speed": 0.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"idle",
+"speed": 0.0
 }]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ursaa"]
@@ -94,6 +161,47 @@ offset_top = 261.0
 offset_right = -256.0
 offset_bottom = 301.0
 color = Color(0, 0.686275, 0, 1)
+
+[node name="Masks" type="Node2D" parent="HUD"]
+
+[node name="SecondMaskBackground" type="ColorRect" parent="HUD/Masks"]
+offset_left = 461.0
+offset_top = -315.0
+offset_right = 568.0
+offset_bottom = -214.0
+color = Color(0, 0, 0, 1)
+
+[node name="SecondMask" type="ColorRect" parent="HUD/Masks"]
+offset_left = 475.0
+offset_top = -306.0
+offset_right = 555.0
+offset_bottom = -226.0
+color = Color(0.46, 0.46, 0.46, 1)
+
+[node name="SecondMaskSprite" type="AnimatedSprite2D" parent="HUD/Masks"]
+position = Vector2(515, -265)
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_ircl7")
+animation = &"idle"
+
+[node name="FirstMaskBackground" type="ColorRect" parent="HUD/Masks"]
+offset_left = 290.0
+offset_top = -316.0
+offset_right = 446.0
+offset_bottom = -171.0
+color = Color(0, 0, 0, 1)
+
+[node name="FirstMask" type="ColorRect" parent="HUD/Masks"]
+offset_left = 309.0
+offset_top = -302.0
+offset_right = 429.0
+offset_bottom = -188.0
+
+[node name="FirstMaskSprite" type="AnimatedSprite2D" parent="HUD/Masks"]
+position = Vector2(369, -247)
+scale = Vector2(0.15, 0.15)
+sprite_frames = SubResource("SpriteFrames_no8sr")
+animation = &"idle"
 
 [node name="EnemyCollisionDetectors" type="Node2D" parent="."]
 
@@ -166,6 +274,7 @@ scale = Vector2(0.648438, 0.8125)
 sprite_frames = SubResource("SpriteFrames_ursaa")
 
 [node name="InvincibilityTimer" type="Timer" parent="."]
+one_shot = true
 
 [node name="AttackTimer" type="Timer" parent="."]
 wait_time = 0.5

@@ -1,9 +1,9 @@
 extends Node2D
 
+@onready var arma_mask = preload("res://Scenes/armadillo_mask.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
-	#$Player.playerDeath.connect(_on_player_death)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -20,3 +20,15 @@ func _on_player_death() -> void:
 
 func _on_restart() -> void:
 	get_tree().reload_current_scene()
+
+
+func _on_rolling_enemy_roller_defeat(enemyPosition) -> void:
+	print("Mask dropped")
+	var mask = arma_mask.instantiate()
+	get_tree().get_root().add_child(mask)
+	mask.global_position = enemyPosition
+	mask.armaMaskObtained.connect(_on_arma_mask_obtained)
+
+func _on_arma_mask_obtained() -> void:
+	print("Armadillo Mask Obtained!")
+	$Player.armaMask = true

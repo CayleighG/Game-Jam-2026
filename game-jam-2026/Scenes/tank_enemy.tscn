@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://b0sfroqo73624"]
 
-[ext_resource type="Script" path="res://Scripts/tank_enemy.gd" id="1_5lmxw"]
+[ext_resource type="Script" path="res://Scripts/Enemies/tank_enemy.gd" id="1_5lmxw"]
 [ext_resource type="Texture2D" uid="uid://k01ptvd4ih8k" path="res://PNGs/Enemies/tank.png" id="2_inxei"]
 [ext_resource type="Texture2D" uid="uid://by8ty1d2c2qv2" path="res://PNGs/Enemies/alert.png" id="3_xjqi1"]
 

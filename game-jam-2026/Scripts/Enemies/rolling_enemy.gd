@@ -11,6 +11,8 @@ var left
 var right
 var health
 
+signal rollerDefeat(Vector2)
+
 @onready var player = get_node("../Player")
 
 func _ready():
@@ -119,6 +121,7 @@ func isDamaged():
 		$HealthBar.size.x -= 30
 	if health == 0:
 		print("Deleting enemy")
+		rollerDefeat.emit(self.global_position)
 		queue_free()
 	else:
 		pursuit = true

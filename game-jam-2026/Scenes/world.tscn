@@ -51,7 +51,7 @@ tile_set = SubResource("TileSet_lomf0")
 position = Vector2(-812, -100)
 
 [node name="rolling_enemy" parent="." groups=["enemy"] instance=ExtResource("6_hgv5s")]
-position = Vector2(1215, -370)
+position = Vector2(508, 405)
 
 [node name="TankEnemy" parent="." groups=["enemy"] instance=ExtResource("6_7ytpm")]
 position = Vector2(141, -573)
@@ -60,7 +60,8 @@ position = Vector2(141, -573)
 position = Vector2(2295, 524)
 
 [node name="Player" parent="." instance=ExtResource("2_cok2j")]
-position = Vector2(1280, 502)
+position = Vector2(1161, 563)
 
+[connection signal="rollerDefeat" from="rolling_enemy" to="." method="_on_rolling_enemy_roller_defeat"]
 [connection signal="playerDeath" from="Player" to="." method="_on_player_death"]
 [connection signal="restart" from="Player" to="." method="_on_restart"]
