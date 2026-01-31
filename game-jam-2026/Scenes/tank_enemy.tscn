@@ -1,53 +1,49 @@
-[gd_scene load_steps=8 format=3 uid="uid://ca1dbpidcu7s7"]
+[gd_scene load_steps=7 format=3 uid="uid://b0sfroqo73624"]
 
-[ext_resource type="Script" path="res://Scripts/enemy_1.gd" id="1_ngogt"]
-[ext_resource type="Texture2D" uid="uid://cka5otlxh08po" path="res://PNGs/Enemies/enemy_1.png" id="1_wqs2n"]
-[ext_resource type="Texture2D" uid="uid://c40s2a0lt6mff" path="res://PNGs/Enemies/enemy_2.png" id="2_w883n"]
-[ext_resource type="Texture2D" uid="uid://by8ty1d2c2qv2" path="res://PNGs/Enemies/alert.png" id="4_dvwxy"]
+[ext_resource type="Script" path="res://Scripts/tank_enemy.gd" id="1_5lmxw"]
+[ext_resource type="Texture2D" uid="uid://k01ptvd4ih8k" path="res://PNGs/Enemies/tank.png" id="2_inxei"]
+[ext_resource type="Texture2D" uid="uid://by8ty1d2c2qv2" path="res://PNGs/Enemies/alert.png" id="3_xjqi1"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbo0t"]
-size = Vector2(126, 115)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p0u4b"]
+size = Vector2(126, 129)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_ucm5w"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_m5hn6"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_wqs2n")
-}, {
-"duration": 1.0,
-"texture": ExtResource("2_w883n")
+"texture": ExtResource("2_inxei")
 }],
 "loop": true,
 "name": &"idle",
 "speed": 5.0
 }]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_phoqs"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_o4hy0"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_dvwxy")
+"texture": ExtResource("3_xjqi1")
 }],
 "loop": true,
 "name": &"default",
 "speed": 5.0
 }]
 
-[node name="Enemy1" type="CharacterBody2D" groups=["enemy"]]
+[node name="TankEnemy" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 2
-script = ExtResource("1_ngogt")
+script = ExtResource("1_5lmxw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, 7.5)
-shape = SubResource("RectangleShape2D_lbo0t")
+position = Vector2(1, 0.5)
+shape = SubResource("RectangleShape2D_p0u4b")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_ucm5w")
+sprite_frames = SubResource("SpriteFrames_m5hn6")
 animation = &"idle"
 
 [node name="WallDetector" type="RayCast2D" parent="."]
-target_position = Vector2(-66, -1)
+target_position = Vector2(-75, 0)
 collision_mask = 2
 
 [node name="TopandBottomDetector" type="RayCast2D" parent="."]
@@ -56,17 +52,17 @@ collision_mask = 2
 
 [node name="HealthBarBackground" type="ColorRect" parent="."]
 offset_left = -62.0
-offset_top = -80.0
+offset_top = -88.0
 offset_right = 66.0
-offset_bottom = -61.0
+offset_bottom = -69.0
 color = Color(0, 0, 0, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="HealthBar" type="ColorRect" parent="."]
 offset_left = -59.0
-offset_top = -76.0
+offset_top = -84.0
 offset_right = 61.0
-offset_bottom = -66.0
+offset_bottom = -74.0
 color = Color(0.263748, 0.586533, 0, 1)
 metadata/_edit_use_anchors_ = true
 
@@ -132,9 +128,9 @@ wait_time = 3.0
 one_shot = true
 
 [node name="Alert" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -113)
+position = Vector2(0, -124)
 scale = Vector2(0.5, 0.5)
-sprite_frames = SubResource("SpriteFrames_phoqs")
+sprite_frames = SubResource("SpriteFrames_o4hy0")
 
 [connection signal="timeout" from="PursuitTimer" to="." method="_on_pursuit_timer_timeout"]
 [connection signal="timeout" from="DetectTimer" to="." method="_on_detect_timer_timeout"]

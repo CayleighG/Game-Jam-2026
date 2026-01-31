@@ -1,53 +1,53 @@
-[gd_scene load_steps=8 format=3 uid="uid://ca1dbpidcu7s7"]
+[gd_scene load_steps=7 format=3 uid="uid://dlcmseos75nxh"]
 
-[ext_resource type="Script" path="res://Scripts/enemy_1.gd" id="1_ngogt"]
-[ext_resource type="Texture2D" uid="uid://cka5otlxh08po" path="res://PNGs/Enemies/enemy_1.png" id="1_wqs2n"]
-[ext_resource type="Texture2D" uid="uid://c40s2a0lt6mff" path="res://PNGs/Enemies/enemy_2.png" id="2_w883n"]
-[ext_resource type="Texture2D" uid="uid://by8ty1d2c2qv2" path="res://PNGs/Enemies/alert.png" id="4_dvwxy"]
+[ext_resource type="Script" path="res://Scripts/sniper_enemy.gd" id="1_g2mjt"]
+[ext_resource type="Texture2D" uid="uid://c2jpajutv2kth" path="res://PNGs/Enemies/sniper.png" id="2_fexuo"]
+[ext_resource type="Texture2D" uid="uid://by8ty1d2c2qv2" path="res://PNGs/Enemies/alert.png" id="3_y063f"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbo0t"]
-size = Vector2(126, 115)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_su86w"]
+size = Vector2(126, 122)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_ucm5w"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_3xqxw"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_wqs2n")
-}, {
-"duration": 1.0,
-"texture": ExtResource("2_w883n")
+"texture": ExtResource("2_fexuo")
 }],
 "loop": true,
 "name": &"idle",
 "speed": 5.0
 }]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_phoqs"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_aj5qo"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_dvwxy")
+"texture": ExtResource("3_y063f")
 }],
 "loop": true,
 "name": &"default",
 "speed": 5.0
 }]
 
-[node name="Enemy1" type="CharacterBody2D" groups=["enemy"]]
+[node name="SniperEnemy" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 2
-script = ExtResource("1_ngogt")
+script = ExtResource("1_g2mjt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, 7.5)
-shape = SubResource("RectangleShape2D_lbo0t")
+position = Vector2(1, 4)
+shape = SubResource("RectangleShape2D_su86w")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_ucm5w")
+sprite_frames = SubResource("SpriteFrames_3xqxw")
 animation = &"idle"
 
 [node name="WallDetector" type="RayCast2D" parent="."]
 target_position = Vector2(-66, -1)
+collision_mask = 2
+
+[node name="WallDetector2" type="RayCast2D" parent="."]
+target_position = Vector2(69, 0)
 collision_mask = 2
 
 [node name="TopandBottomDetector" type="RayCast2D" parent="."]
@@ -73,68 +73,76 @@ metadata/_edit_use_anchors_ = true
 [node name="View" type="Node2D" parent="."]
 
 [node name="RayCast2D" type="RayCast2D" parent="View"]
-target_position = Vector2(-171, -424)
+target_position = Vector2(-255, -625)
 
 [node name="RayCast2D2" type="RayCast2D" parent="View"]
-target_position = Vector2(-402, -301)
+target_position = Vector2(-651, -472)
 
 [node name="RayCast2D3" type="RayCast2D" parent="View"]
-target_position = Vector2(-506, 2)
+target_position = Vector2(-765, -3)
 
 [node name="RayCast2D4" type="RayCast2D" parent="View"]
-target_position = Vector2(-459, 174)
+target_position = Vector2(-706, 283)
 
 [node name="RayCast2D5" type="RayCast2D" parent="View"]
-target_position = Vector2(-251, 387)
+target_position = Vector2(-385, 572)
 
 [node name="RayCast2D6" type="RayCast2D" parent="View"]
-target_position = Vector2(-387, 277)
+target_position = Vector2(-614, 423)
 
 [node name="RayCast2D7" type="RayCast2D" parent="View"]
-target_position = Vector2(-486, 82)
+target_position = Vector2(-735, 134)
 
 [node name="RayCast2D8" type="RayCast2D" parent="View"]
-target_position = Vector2(-482, -151)
+target_position = Vector2(-733, -244)
 
 [node name="RayCast2D9" type="RayCast2D" parent="View"]
-target_position = Vector2(-285, -380)
+target_position = Vector2(-430, -577)
 
 [node name="RayCast2D10" type="RayCast2D" parent="View"]
-target_position = Vector2(-228, -403)
+target_position = Vector2(-336, -601)
 
 [node name="RayCast2D11" type="RayCast2D" parent="View"]
-target_position = Vector2(-343, -348)
+target_position = Vector2(-525, -542)
 
 [node name="RayCast2D12" type="RayCast2D" parent="View"]
-target_position = Vector2(-443, -231)
+target_position = Vector2(-703, -366)
 
 [node name="RayCast2D13" type="RayCast2D" parent="View"]
-target_position = Vector2(-490, -76)
+target_position = Vector2(-741, -114)
 
 [node name="RayCast2D14" type="RayCast2D" parent="View"]
-target_position = Vector2(-496, 43)
+target_position = Vector2(-736, 64)
 
 [node name="RayCast2D15" type="RayCast2D" parent="View"]
-target_position = Vector2(-467, 128)
+target_position = Vector2(-712, 207)
 
 [node name="RayCast2D16" type="RayCast2D" parent="View"]
-target_position = Vector2(-422, 224)
+target_position = Vector2(-662, 358)
 
 [node name="RayCast2D17" type="RayCast2D" parent="View"]
-target_position = Vector2(-326, 337)
+target_position = Vector2(-508, 524)
 
 [node name="PursuitTimer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
 
 [node name="DetectTimer" type="Timer" parent="."]
-wait_time = 3.0
+one_shot = true
+
+[node name="FireTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="Alert" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -113)
 scale = Vector2(0.5, 0.5)
-sprite_frames = SubResource("SpriteFrames_phoqs")
+sprite_frames = SubResource("SpriteFrames_aj5qo")
+
+[node name="WallRunTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
 
 [connection signal="timeout" from="PursuitTimer" to="." method="_on_pursuit_timer_timeout"]
 [connection signal="timeout" from="DetectTimer" to="." method="_on_detect_timer_timeout"]
+[connection signal="timeout" from="FireTimer" to="." method="_on_fire_timer_timeout"]
+[connection signal="timeout" from="WallRunTimer" to="." method="_on_wall_run_timer_timeout"]

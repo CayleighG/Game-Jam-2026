@@ -6,7 +6,6 @@ var invisible
 var invisBarCharge: int = 100
 var invisTimerRunning = false
 var isAttacking = false
-var playerIsDamaged = false
 var playerHealth: int = 5;
 const speed = 300.0
 
@@ -22,7 +21,19 @@ func _ready():
 	$AnimatedSprite2D.play("idle")
 
 func _physics_process(delta: float) -> void:
-	if playerAlive and !playerIsDamaged:
+	# GET UNSTUCK
+	if $GetUnstuck.is_colliding():
+		print("STUCK!")
+		if !$Unstuck/UnstuckDetector1.is_colliding():
+			global_position.y -= 100
+		elif !$Unstuck/UnstuckDetector2.is_colliding():
+			global_position.y += 100
+		elif !$Unstuck/UnstuckDetector3.is_colliding():
+			global_position.x -= 200
+		elif !$Unstuck/UnstuckDetector4.is_colliding():
+			global_position.y += 100
+		
+	if playerAlive:
 		# Get the input direction and handle the movement/deceleration.
 		# As good practice, you should replace UI actions with custom gameplay actions.
 		var direction := Input.get_axis("left", "right")
@@ -111,8 +122,12 @@ func _physics_process(delta: float) -> void:
 	
 func playerDamaged(enemy, delta):
 	# Damage
-	playerHealth -= 1
-	playerIsDamaged = true
+	if invisible:
+		invisible = false
+		$AnimatedSprite2D.modulate.a = 1
+		invisTimerRunning = false
+		$InvisTimer.stop()
+	#playerHealth -= 1
 	invulnerable = true
 	knockback(enemy, delta)
 	
@@ -126,6 +141,8 @@ func playerDamaged(enemy, delta):
 		playerAlive = false
 		velocity.x = 0
 		velocity.y = 0
+		$HUD/InvisBar.hide()
+		$HUD/InvisBarBackground.hide()
 		$HUD/GameOverLabel.show()
 		$HUD/RetryButton.show()
 		playerDeath.emit()
@@ -153,7 +170,6 @@ func knockback(enemy, delta):
 ## Detects when the timer for the invincibility frames ends
 func _on_invincibility_timer_timeout() -> void:
 	# Sets player model back to opaque
-	playerIsDamaged = false
 	modulate.a = 1
 	invulnerable = false
 	print("playerHealth = ", playerHealth)
@@ -174,7 +190,7 @@ func _on_invis_timer_timeout() -> void:
 	invisTimerRunning = false
 	if invisible:
 		if invisBarCharge > 0:
-			print(invisBarCharge)
+			#print(invisBarCharge)
 			invisBarCharge -= 1;
 			$HUD/InvisBar.size.x -= 3
 		else:
@@ -184,5 +200,5 @@ func _on_invis_timer_timeout() -> void:
 	else:
 		invisBarCharge += 1
 		$HUD/InvisBar.size.x += 3
-		print(invisBarCharge)
+		#print(invisBarCharge)
 		

@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=3 uid="uid://csn4vgjtttq3q"]
+
+[ext_resource type="Script" path="res://Scenes/enemy_bullet.gd" id="1_mf3oj"]
+[ext_resource type="Texture2D" uid="uid://wuepn6kt8bqo" path="res://PNGs/projectile.png" id="2_eww4y"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2veco"]
+radius = 22.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ua4m5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_eww4y")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="EnemyBullet" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_mf3oj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_2veco")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ua4m5")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(1, 0.5)
+scale = Vector2(2.7, 2.45)
+
+[node name="Collision" type="Node2D" parent="."]
+
+[node name="RayCast2D" type="RayCast2D" parent="Collision"]
+target_position = Vector2(0, 22)
+
+[node name="RayCast2D2" type="RayCast2D" parent="Collision"]
+target_position = Vector2(-22, 0)
+
+[node name="RayCast2D3" type="RayCast2D" parent="Collision"]
+target_position = Vector2(0, -22)
+
+[node name="RayCast2D4" type="RayCast2D" parent="Collision"]
+target_position = Vector2(22, 0)
+
+[node name="RayCast2D5" type="RayCast2D" parent="Collision"]
+target_position = Vector2(-15, 16)
+
+[node name="RayCast2D6" type="RayCast2D" parent="Collision"]
+target_position = Vector2(-14, -17)
+
+[node name="RayCast2D7" type="RayCast2D" parent="Collision"]
+target_position = Vector2(16, -15)
+
+[node name="RayCast2D8" type="RayCast2D" parent="Collision"]
+target_position = Vector2(16, 14)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
