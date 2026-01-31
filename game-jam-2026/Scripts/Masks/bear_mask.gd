@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-signal armaMaskObtained(CharacterBody2D)
+signal bearMaskObtained(CharacterBody2D)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -13,5 +13,5 @@ func _physics_process(delta: float) -> void:
 	for detector in $Collision.get_children():
 		# Needed the "(detector.get_collider() != null)" or else it crashes after deleting the collider
 		if detector.is_colliding() and (detector.get_collider() != null):
-			armaMaskObtained.emit(self)
+			bearMaskObtained.emit(self)
 			#queue_free()

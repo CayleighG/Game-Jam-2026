@@ -1,13 +1,13 @@
 [gd_scene load_steps=5 format=3 uid="uid://tb67calfdfdx"]
 
-[ext_resource type="Script" path="res://Scripts/Masks/armadillo_mask.gd" id="1_u57ka"]
-[ext_resource type="Texture2D" uid="uid://bt4vk7x5ijs8f" path="res://PNGs/Masks/armadillo_mask.png" id="2_2iq18"]
+[ext_resource type="Script" path="res://Scripts/Masks/armadillo_mask.gd" id="1_8tddd"]
+[ext_resource type="Texture2D" uid="uid://bt4vk7x5ijs8f" path="res://PNGs/Masks/armadillo_mask.png" id="2_edu5b"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_n071a"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_2iq18")
+"texture": ExtResource("2_edu5b")
 }],
 "loop": true,
 "name": &"default",
@@ -20,7 +20,7 @@ size = Vector2(40, 59)
 [node name="ArmadilloMask" type="CharacterBody2D"]
 collision_layer = 16
 collision_mask = 0
-script = ExtResource("1_u57ka")
+script = ExtResource("1_8tddd")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.1, 0.1)
@@ -43,15 +43,3 @@ target_position = Vector2(-20, 0)
 
 [node name="RayCast2D4" type="RayCast2D" parent="Collision"]
 target_position = Vector2(0, -29)
-
-[node name="RayCast2D5" type="RayCast2D" parent="Collision"]
-target_position = Vector2(-20, 30)
-
-[node name="RayCast2D6" type="RayCast2D" parent="Collision"]
-target_position = Vector2(20, 30)
-
-[node name="RayCast2D7" type="RayCast2D" parent="Collision"]
-target_position = Vector2(-20, -29)
-
-[node name="RayCast2D8" type="RayCast2D" parent="Collision"]
-target_position = Vector2(20, -29)

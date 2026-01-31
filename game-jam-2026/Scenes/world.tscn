@@ -4,10 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://dida0stvmj7kd" path="res://PNGs/background.png" id="2_ci6s3"]
 [ext_resource type="PackedScene" uid="uid://cbwo4ao02kqa8" path="res://Scenes/player.tscn" id="2_cok2j"]
 [ext_resource type="Texture2D" uid="uid://cp2fsum6as3w4" path="res://PNGs/tilesheet.png" id="2_st56i"]
-[ext_resource type="PackedScene" uid="uid://ca1dbpidcu7s7" path="res://Scenes/enemy_1.tscn" id="4_2bgsj"]
-[ext_resource type="PackedScene" uid="uid://b0sfroqo73624" path="res://Scenes/tank_enemy.tscn" id="6_7ytpm"]
-[ext_resource type="PackedScene" uid="uid://4vugp26nqo15" path="res://Scenes/rolling_enemy.tscn" id="6_hgv5s"]
-[ext_resource type="PackedScene" uid="uid://dlcmseos75nxh" path="res://Scenes/sniper_enemy.tscn" id="7_qw3cs"]
+[ext_resource type="PackedScene" uid="uid://ca1dbpidcu7s7" path="res://Scenes/Enemies/enemy_1.tscn" id="4_2bgsj"]
+[ext_resource type="PackedScene" uid="uid://b0sfroqo73624" path="res://Scenes/Enemies/tank_enemy.tscn" id="6_7ytpm"]
+[ext_resource type="PackedScene" uid="uid://4vugp26nqo15" path="res://Scenes/Enemies/rolling_enemy.tscn" id="6_hgv5s"]
+[ext_resource type="PackedScene" uid="uid://dlcmseos75nxh" path="res://Scenes/Enemies/sniper_enemy.tscn" id="7_qw3cs"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wr55b"]
 texture = ExtResource("2_ci6s3")
@@ -63,5 +63,7 @@ position = Vector2(2295, 524)
 position = Vector2(1161, 563)
 
 [connection signal="rollerDefeat" from="rolling_enemy" to="." method="_on_rolling_enemy_roller_defeat"]
+[connection signal="tankDefeat" from="TankEnemy" to="." method="_on_tank_enemy_tank_defeat"]
+[connection signal="sniperDefeat" from="SniperEnemy" to="." method="_on_sniper_enemy_sniper_defeat"]
 [connection signal="playerDeath" from="Player" to="." method="_on_player_death"]
 [connection signal="restart" from="Player" to="." method="_on_restart"]

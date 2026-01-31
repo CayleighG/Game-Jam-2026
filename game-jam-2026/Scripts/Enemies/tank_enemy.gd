@@ -9,6 +9,8 @@ var left
 var right
 var health
 
+signal tankDefeat(Vector2)
+
 @onready var player = get_node("../Player")
 
 func _ready():
@@ -91,6 +93,7 @@ func isDamaged():
 		$HealthBar.size.x -= 12
 	if health == 0:
 		print("Deleting enemy")
+		tankDefeat.emit(self.global_position)
 		queue_free()
 
 func _on_pursuit_timer_timeout() -> void:

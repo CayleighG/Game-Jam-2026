@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://csn4vgjtttq3q"]
 
-[ext_resource type="Script" path="res://Scenes/enemy_bullet.gd" id="1_mf3oj"]
-[ext_resource type="Texture2D" uid="uid://wuepn6kt8bqo" path="res://PNGs/projectile.png" id="2_eww4y"]
+[ext_resource type="Script" path="res://Scripts/Enemies/enemy_bullet.gd" id="1_r615r"]
+[ext_resource type="Texture2D" uid="uid://wuepn6kt8bqo" path="res://PNGs/projectile.png" id="2_6k3gm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2veco"]
 radius = 22.0
@@ -10,7 +10,7 @@ radius = 22.0
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_eww4y")
+"texture": ExtResource("2_6k3gm")
 }],
 "loop": true,
 "name": &"default",
@@ -20,7 +20,7 @@ animations = [{
 [node name="EnemyBullet" type="CharacterBody2D"]
 collision_layer = 8
 collision_mask = 0
-script = ExtResource("1_mf3oj")
+script = ExtResource("1_r615r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_2veco")

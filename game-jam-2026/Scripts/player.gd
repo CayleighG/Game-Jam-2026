@@ -9,15 +9,21 @@ var isAttacking = false
 var playerHealth: int = 5;
 const speed = 300.0
 
+var maskNum
 var armaMask = false
 var bearMask = false
 var fishMask = false
+
+var armaAbility = false
+var bearAbility = false
+var fishAbility = false
 
 signal playerDeath
 signal restart
 
 func _ready():
 	invisible = false
+	maskNum = 0
 	$BackgroundColor.modulate = Color(0,0,0,0)
 	$Attack.hide()
 	$HUD/GameOverLabel.hide()
@@ -40,7 +46,6 @@ func _physics_process(delta: float) -> void:
 			global_position.y += 100
 		
 	if playerAlive:
-		checkMask()
 		# Get the input direction and handle the movement/deceleration.
 		# As good practice, you should replace UI actions with custom gameplay actions.
 		var direction := Input.get_axis("left", "right")
@@ -56,20 +61,20 @@ func _physics_process(delta: float) -> void:
 				#$AttackDetector.scale.x *= -1
 				$AttackDetector.look_at(Vector2(position.x - 50, position.y))
 				$AttackDetector.scale.x = 1
-				$AnimatedSprite2D.play("walk_sideways")
+				#$AnimatedSprite2D.play("walk_sideways")
 			
 			elif Input.is_action_pressed("left"):
 				$AnimatedSprite2D.flip_h = false
 				#$Attack.flip_h = not $Attack.flip_h
 				$AttackDetector.rotation = 0
 				$AttackDetector.scale.x = 1
-				$AnimatedSprite2D.play("walk_sideways")
+				#$AnimatedSprite2D.play("walk_sideways")
 		
 			if Input.is_action_pressed("up"):
 				velocity.y = -speed
 				$AttackDetector.look_at(Vector2(position.x, position.y + 50))
 				$AttackDetector.scale.x = 1.5
-				$AnimatedSprite2D.play("walk_back")
+				#$AnimatedSprite2D.play("walk_back")
 			elif Input.is_action_pressed("down"):
 				velocity.y = speed
 				$AttackDetector.look_at(Vector2(position.x, position.y - 50))
@@ -79,6 +84,14 @@ func _physics_process(delta: float) -> void:
 				velocity.y = 0
 			
 			velocity.x = direction * speed
+		
+		# Drop masks
+		if Input.is_action_just_pressed("swapMask") and (maskNum > 0):
+			swapMask()
+		if Input.is_action_just_pressed("dropMask") and (maskNum > 0):
+			dropMask()
+		
+		
 		
 		# Invisibility
 		if Input.is_action_pressed("invisibility") and invisBarCharge == 100:
@@ -96,6 +109,7 @@ func _physics_process(delta: float) -> void:
 				invisTimerRunning = true
 				$InvisTimer.start()
 			
+		# Attack
 		if Input.is_action_pressed("attack"):
 			# Can't stay invisible while attacking
 			if invisible:
@@ -112,7 +126,7 @@ func _physics_process(delta: float) -> void:
 					collider.isDamaged()
 					#print(collider.health)
 				
-	
+		# Damage
 		for detector in $EnemyCollisionDetectors.get_children():
 				# Needed the "(detector.get_collider() != null)" or else it crashes after deleting the collider
 				if detector.is_colliding() and (detector.get_collider() != null) && playerAlive:
@@ -174,10 +188,86 @@ func knockback(enemy, delta):
 	
 	velocity = Vector2(xVel, yVel)
 
-func checkMask():
-	if armaMask:
-		$HUD/Masks/FirstMaskSprite.show()
-		$HUD/Masks/FirstMaskSprite.play("armadillo")
+func getMask(maskName):
+	#if (maskNum == 0):
+	$HUD/Masks/FirstMaskSprite.show()
+	$HUD/Masks/SecondMaskSprite.show()
+	if $HUD/Masks/FirstMaskSprite.animation == "idle":
+		if maskName == "armadillo":
+			$HUD/Masks/FirstMaskSprite.play("armadillo")
+		elif maskName == "bear":
+			$HUD/Masks/FirstMaskSprite.play("bear")
+		elif maskName == "fish":
+			$HUD/Masks/FirstMaskSprite.play("fish")
+	elif $HUD/Masks/SecondMaskSprite.animation == "idle":
+		if maskName == "armadillo":
+			$HUD/Masks/SecondMaskSprite.play("armadillo")
+		elif maskName == "bear":
+			$HUD/Masks/SecondMaskSprite.play("bear")
+		elif maskName == "fish":
+			$HUD/Masks/SecondMaskSprite.play("fish")
+				
+
+func swapMask():
+	if $HUD/Masks/SecondMaskSprite.animation == "idle":
+		if armaMask:
+			$HUD/Masks/SecondMaskSprite.play("armadillo")
+		elif bearMask:
+			$HUD/Masks/SecondMaskSprite.play("bear")
+		elif fishMask:
+			$HUD/Masks/SecondMaskSprite.play("fish")
+		$HUD/Masks/FirstMaskSprite.play("idle")
+	elif $HUD/Masks/FirstMaskSprite.animation == "idle":
+		if armaMask:
+			$HUD/Masks/FirstMaskSprite.play("armadillo")
+		elif bearMask:
+			$HUD/Masks/FirstMaskSprite.play("bear")
+		elif fishMask:
+			$HUD/Masks/FirstMaskSprite.play("fish")
+		$HUD/Masks/SecondMaskSprite.play("idle")
+	elif $HUD/Masks/FirstMaskSprite.animation == "armadillo":
+		if bearMask:
+			$HUD/Masks/FirstMaskSprite.play("bear")
+		elif fishMask:
+			$HUD/Masks/FirstMaskSprite.play("fish")
+		$HUD/Masks/SecondMaskSprite.play("armadillo")
+	elif $HUD/Masks/FirstMaskSprite.animation == "bear":
+		if armaMask:
+			$HUD/Masks/FirstMaskSprite.play("armadillo")
+		elif fishMask:
+			$HUD/Masks/FirstMaskSprite.play("fish")
+		$HUD/Masks/SecondMaskSprite.play("bear")
+	elif $HUD/Masks/FirstMaskSprite.animation == "fish":
+		if armaMask:
+			$HUD/Masks/FirstMaskSprite.play("armadillo")
+		elif bearMask:
+			$HUD/Masks/FirstMaskSprite.play("bear")
+		$HUD/Masks/SecondMaskSprite.play("fish")
+		
+		
+		
+func dropMask():
+	if $HUD/Masks/SecondMaskSprite.animation != "idle":
+		if $HUD/Masks/SecondMaskSprite.animation == "armadillo":
+			$HUD/Masks/SecondMaskSprite.play("idle")
+			armaMask = false
+		elif $HUD/Masks/SecondMaskSprite.animation == "bear":
+			$HUD/Masks/SecondMaskSprite.play("idle")
+			bearMask = false
+		elif $HUD/Masks/SecondMaskSprite.animation == "fish":
+			$HUD/Masks/SecondMaskSprite.play("idle")
+			fishMask = false
+	elif $HUD/Masks/FirstMaskSprite.animation != "idle":
+		if $HUD/Masks/FirstMaskSprite.animation == "armadillo":
+			$HUD/Masks/FirstMaskSprite.play("idle")
+			armaMask = false
+		elif $HUD/Masks/FirstMaskSprite.animation == "bear":
+			$HUD/Masks/FirstMaskSprite.play("idle")
+			bearMask = false
+		elif $HUD/Masks/FirstMaskSprite.animation == "fish":
+			$HUD/Masks/FirstMaskSprite.play("idle")
+			fishMask = false
+	maskNum -= 1
 
 ## Detects when the timer for the invincibility frames ends
 func _on_invincibility_timer_timeout() -> void:

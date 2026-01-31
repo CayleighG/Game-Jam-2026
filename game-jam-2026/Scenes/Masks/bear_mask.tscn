@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://bha7vekcag6a1"]
+
+[ext_resource type="Script" path="res://Scripts/Masks/bear_mask.gd" id="1_tuk6m"]
+[ext_resource type="Texture2D" uid="uid://b6rkftd4vcdfb" path="res://PNGs/Masks/bear_mask.png" id="2_u1xjo"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7wn5v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_u1xjo")
+}],
+"loop": true,
+"name": &"default",
+"speed": 0.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0nby4"]
+size = Vector2(68, 52)
+
+[node name="BearMask" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_tuk6m")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_7wn5v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_0nby4")
+
+[node name="Collision" type="Node2D" parent="."]
+
+[node name="RayCast2D" type="RayCast2D" parent="Collision"]
+target_position = Vector2(0, 24)
+
+[node name="RayCast2D2" type="RayCast2D" parent="Collision"]
+target_position = Vector2(-34, 0)
+
+[node name="RayCast2D3" type="RayCast2D" parent="Collision"]
+target_position = Vector2(0, -28)
+
+[node name="RayCast2D4" type="RayCast2D" parent="Collision"]
+target_position = Vector2(34, 0)

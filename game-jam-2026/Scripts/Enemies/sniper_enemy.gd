@@ -11,8 +11,10 @@ var left
 var right
 var health
 
+signal sniperDefeat(Vector2)
+
 @onready var player = get_node("../Player")
-@onready var bullets = preload("res://Scenes/enemy_bullet.tscn")
+@onready var bullets = preload("res://Scenes/Enemies/enemy_bullet.tscn")
 
 func _ready():
 	health = 100
@@ -125,6 +127,7 @@ func isDamaged():
 		$HealthBar.size.x -= 30
 	if health == 0:
 		print("Deleting enemy")
+		sniperDefeat.emit(self.global_position)
 		queue_free()
 
 func _on_pursuit_timer_timeout() -> void:

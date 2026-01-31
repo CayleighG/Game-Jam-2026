@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_ucbdq"]
 [ext_resource type="Texture2D" uid="uid://bt8ufjqnf3b6i" path="res://PNGs/Player/Test/Back.png" id="1_xylwy"]
-[ext_resource type="Texture2D" uid="uid://dnqdodarnugws" path="res://PNGs/Player/Test/Forward.png" id="2_mc54d"]
+[ext_resource type="Texture2D" uid="uid://4clg5ligpc0m" path="res://PNGs/Player/chameleon.png" id="2_3y4pq"]
 [ext_resource type="Texture2D" uid="uid://w0rbrb4umgqt" path="res://PNGs/Player/Test/Left.png" id="3_aw4kx"]
 [ext_resource type="Texture2D" uid="uid://bt4vk7x5ijs8f" path="res://PNGs/Masks/armadillo_mask.png" id="5_gpn4u"]
 [ext_resource type="Texture2D" uid="uid://bxq80od4ni31x" path="res://PNGs/Player/Test/Swipe.png" id="5_tmlmh"]
@@ -10,13 +10,13 @@
 [ext_resource type="Texture2D" uid="uid://6ktu1a507002" path="res://PNGs/Masks/fish_mask.png" id="7_wtpk4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bnr50"]
-size = Vector2(33, 113)
+size = Vector2(68, 106)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_t37po"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_mc54d")
+"texture": ExtResource("2_3y4pq")
 }],
 "loop": true,
 "name": &"idle",
@@ -65,7 +65,10 @@ animations = [{
 "name": &"fish",
 "speed": 0.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
 "loop": true,
 "name": &"idle",
 "speed": 0.0
@@ -97,7 +100,10 @@ animations = [{
 "name": &"fish",
 "speed": 0.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
 "loop": true,
 "name": &"idle",
 "speed": 0.0
@@ -125,10 +131,12 @@ offset_right = 582.0
 offset_bottom = 310.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, 7.5)
+position = Vector2(8, 4)
 shape = SubResource("RectangleShape2D_bnr50")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(12, -3)
+scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_t37po")
 animation = &"idle"
 
@@ -207,61 +215,65 @@ animation = &"idle"
 
 [node name="Detector1" type="RayCast2D" parent="EnemyCollisionDetectors"]
 scale = Vector2(1.4, 1.4)
+target_position = Vector2(0, 42.8571)
 collision_mask = 4
 
 [node name="Detector2" type="RayCast2D" parent="EnemyCollisionDetectors"]
 rotation = -1.5708
 scale = Vector2(1, 0.4)
+target_position = Vector2(-0.00015928, 110)
 collision_mask = 4
 
 [node name="Detector3" type="RayCast2D" parent="EnemyCollisionDetectors"]
 rotation = 3.14159
 scale = Vector2(1, 1.1)
+target_position = Vector2(-0.000131829, 47.2727)
 collision_mask = 4
 
 [node name="Detector4" type="RayCast2D" parent="EnemyCollisionDetectors"]
 rotation = 1.5708
 scale = Vector2(1, 0.4)
+target_position = Vector2(0.00010136, 70)
 collision_mask = 4
 
 [node name="Detector5" type="RayCast2D" parent="EnemyCollisionDetectors"]
 scale = Vector2(1.4, 5)
-target_position = Vector2(15.7143, -7.6)
+target_position = Vector2(33.5714, -7.4)
 collision_mask = 4
 
 [node name="Detector6" type="RayCast2D" parent="EnemyCollisionDetectors"]
 scale = Vector2(1.4, 5)
-target_position = Vector2(15.7143, 8.6)
+target_position = Vector2(34.2857, 8.8)
 collision_mask = 4
 
 [node name="Detector7" type="RayCast2D" parent="EnemyCollisionDetectors"]
 scale = Vector2(1.4, 5)
-target_position = Vector2(-14.2857, 8.6)
+target_position = Vector2(-22.1429, 7.2)
 collision_mask = 4
 
 [node name="Detector8" type="RayCast2D" parent="EnemyCollisionDetectors"]
 scale = Vector2(1.4, 5)
-target_position = Vector2(-14.2857, -8)
+target_position = Vector2(-22.1429, -6.8)
 collision_mask = 4
 
 [node name="Detector9" type="RayCast2D" parent="EnemyCollisionDetectors"]
 scale = Vector2(1.4, 1.4)
-target_position = Vector2(12.8571, -37.1429)
+target_position = Vector2(17.8571, -37.1429)
 collision_mask = 4
 
 [node name="Detector10" type="RayCast2D" parent="EnemyCollisionDetectors"]
 scale = Vector2(1.4, 1.4)
-target_position = Vector2(12.8571, 48.5714)
+target_position = Vector2(20.7143, 42.8571)
 collision_mask = 4
 
 [node name="Detector11" type="RayCast2D" parent="EnemyCollisionDetectors"]
 scale = Vector2(1.4, 1.4)
-target_position = Vector2(-12.1429, 47.8571)
+target_position = Vector2(-15.7143, 43.5714)
 collision_mask = 4
 
 [node name="Detector12" type="RayCast2D" parent="EnemyCollisionDetectors"]
 scale = Vector2(1.4, 1.4)
-target_position = Vector2(-12.1429, -37.8571)
+target_position = Vector2(-14.2857, -37.8571)
 collision_mask = 4
 
 [node name="AttackDetector" type="RayCast2D" parent="."]
