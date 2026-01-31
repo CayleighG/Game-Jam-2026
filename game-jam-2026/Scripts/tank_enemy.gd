@@ -83,6 +83,7 @@ func player_death():
 	
 func isDamaged():
 	health -= 10
+	pursuit = true
 	print("Enemy Health: ", health)
 	$HealthBar.show()
 	$HealthBarBackground.show()

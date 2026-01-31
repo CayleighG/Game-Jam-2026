@@ -37,10 +37,10 @@ func _physics_process(delta: float) -> void:
 		if pursuit and !player.invisible:
 			# A bit more reliable than is_on_wall()
 			# is_on_wall() will activate if the enemy runs into the player, which we do not want
-			if $WallDetector.is_colliding() or $WallDetector2.is_colliding():
+			if $WallDetector.is_colliding():
 				direction = direction * -1
 				# Flip the WallDetector
-				#$WallDetector.scale.x *= -1
+				$WallDetector.scale.x *= -1
 				# Flips the detectors in the enemy's view
 				for detector in $View.get_children():
 					detector.scale.x *= -1
@@ -55,13 +55,13 @@ func _physics_process(delta: float) -> void:
 			if direction == 1:
 				velocity.x = speed
 				$AnimatedSprite2D.flip_h = true
-				#if ($WallDetector.scale.x > 0):
-					#$WallDetector.scale.x *= -1
+				if ($WallDetector.scale.x > 0):
+					$WallDetector.scale.x *= -1
 			else: 
 				velocity.x = -speed
 				$AnimatedSprite2D.flip_h = false
-				#if ($WallDetector.scale.x < 0):
-					#$WallDetector.scale.x *= -1
+				if ($WallDetector.scale.x < 0):
+					$WallDetector.scale.x *= -1
 					
 					
 			# Rotating the detectors so the player is always in the enemy's "view"
@@ -70,7 +70,7 @@ func _physics_process(delta: float) -> void:
 			$View.look_at(Vector2(player.position.x, player.position.y))
 		
 			# Have sniper move away once the player gets too close
-			if !$WallDetector.is_colliding() or $WallDetector2.is_colliding():
+			if !$WallDetector.is_colliding():
 				var distance = global_position.distance_to(player.global_position)
 				if distance < 400:
 					velocity = -position.direction_to(player.position) * speed
@@ -87,25 +87,25 @@ func _physics_process(delta: float) -> void:
 				# Check which way the enemy should be facing
 				if (velocity.x > 0):
 					direction = 1
-					#if ($WallDetector.scale.x > 0):
-						#$WallDetector.scale.x *= -1
+					if ($WallDetector.scale.x > 0):
+						$WallDetector.scale.x *= -1
 				else:
 					direction = -1
-					#if ($WallDetector.scale.x < 0):
-						#$WallDetector.scale.x *= -1
+					if ($WallDetector.scale.x < 0):
+						$WallDetector.scale.x *= -1
 			else:
 				pursuit = false
 				$WallRunTimer.start()
 				if direction == 1:
 					velocity.x = speed
 					$AnimatedSprite2D.flip_h = true
-					#if ($WallDetector.scale.x > 0):
-						#$WallDetector.scale.x *= -1
+					if ($WallDetector.scale.x > 0):
+						$WallDetector.scale.x *= -1
 				else: 
 					velocity.x = -speed
 					$AnimatedSprite2D.flip_h = false
-					#if ($WallDetector.scale.x < 0):
-						#$WallDetector.scale.x *= -1
+					if ($WallDetector.scale.x < 0):
+						$WallDetector.scale.x *= -1
 		#elif player.invisible:
 			#velocity.x = 0
 			#velocity.y = 0
