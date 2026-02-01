@@ -112,13 +112,18 @@ func player_death():
 	stop = true
 	$AnimatedSprite2D.stop()
 	
-func isDamaged():
-	health -= 25
+func isDamaged(type):
+	if type == "normal":
+		health -= 25
+		if $HealthBar.size.x > 0:
+			$HealthBar.size.x -= 30
+	elif type == "bear":
+		health -= 50
+		if $HealthBar.size.x > 0:
+			$HealthBar.size.x -= 60
 	print("Enemy Health: ", health)
 	$HealthBar.show()
 	$HealthBarBackground.show()
-	if $HealthBar.size.x > 0:
-		$HealthBar.size.x -= 30
 	if health == 0:
 		print("Deleting enemy")
 		rollerDefeat.emit(self.global_position)

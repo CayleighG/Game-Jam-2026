@@ -170,6 +170,21 @@ offset_right = -256.0
 offset_bottom = 301.0
 color = Color(0, 0.686275, 0, 1)
 
+[node name="BearAbilityBackground" type="ColorRect" parent="HUD"]
+offset_left = 244.0
+offset_top = 247.0
+offset_right = 566.0
+offset_bottom = 313.0
+color = Color(0, 0, 0, 1)
+
+[node name="BearAbility" type="ColorRect" parent="HUD"]
+offset_left = 556.0
+offset_top = 300.0
+offset_right = 856.0
+offset_bottom = 340.0
+rotation = 3.14159
+color = Color(0.736979, 0.519415, 0, 1)
+
 [node name="Masks" type="Node2D" parent="HUD"]
 
 [node name="SecondMaskBackground" type="ColorRect" parent="HUD/Masks"]
@@ -295,6 +310,10 @@ wait_time = 0.5
 wait_time = 0.05
 one_shot = true
 
+[node name="BearTimer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
 [node name="GetUnstuck" type="RayCast2D" parent="."]
 position = Vector2(0, -48)
 target_position = Vector2(0, 111)
@@ -326,3 +345,4 @@ collision_mask = 2
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
 [connection signal="timeout" from="InvisTimer" to="." method="_on_invis_timer_timeout"]
+[connection signal="timeout" from="BearTimer" to="." method="_on_bear_timer_timeout"]

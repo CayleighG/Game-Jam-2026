@@ -83,14 +83,19 @@ func player_death():
 	stop = true
 	$AnimatedSprite2D.stop()
 	
-func isDamaged():
-	health -= 10
+func isDamaged(type):
+	if type == "normal":
+		health -= 10
+		if $HealthBar.size.x > 0:
+			$HealthBar.size.x -= 12
+	elif type == "bear":
+		health -= 20
+		if $HealthBar.size.x > 0:
+			$HealthBar.size.x -= 24
 	pursuit = true
 	print("Enemy Health: ", health)
 	$HealthBar.show()
 	$HealthBarBackground.show()
-	if $HealthBar.size.x > 0:
-		$HealthBar.size.x -= 12
 	if health == 0:
 		print("Deleting enemy")
 		tankDefeat.emit(self.global_position)
