@@ -8,7 +8,7 @@ var invisTimerRunning = false
 var isAttacking = false
 var playerHealth: int = 5;
 
-const speed = 300.0
+var speed = 300.0
 var direction
 
 var maskNum
@@ -24,6 +24,9 @@ var bearCharge: int = 100
 var bearTimerRunning = false
 
 var justShot = false
+
+var dash = false
+var dashCooldown = false
 
 signal shoot
 signal playerDeath
@@ -61,11 +64,12 @@ func _physics_process(delta: float) -> void:
 		direction = Input.get_axis("left", "right")
 		
 		if !Input.is_anything_pressed():
-			$AnimatedSprite2D.play("idle");
-			velocity.x = 0
-			velocity.y = 0
+			if !dash:
+				$AnimatedSprite2D.play("idle");
+				velocity.x = 0
+				velocity.y = 0
 		else:
-			if Input.is_action_pressed("right"):
+			if Input.is_action_pressed("right") and !dash:
 				$AnimatedSprite2D.flip_h = true
 				#$Attack.flip_h = not $Attack.flip_h
 				#$AttackDetector.scale.x *= -1
@@ -73,7 +77,7 @@ func _physics_process(delta: float) -> void:
 				$AttackDetector.scale.x = 1
 				#$AnimatedSprite2D.play("walk_sideways")
 			
-			elif Input.is_action_pressed("left"):
+			elif Input.is_action_pressed("left") and !dash:
 				$AnimatedSprite2D.flip_h = false
 				#$Attack.flip_h = not $Attack.flip_h
 				$AttackDetector.rotation = 0
@@ -94,6 +98,12 @@ func _physics_process(delta: float) -> void:
 				velocity.y = 0
 			
 			velocity.x = direction * speed
+			
+			if dash:
+				if velocity.y < 0:
+					velocity.y = -speed
+				elif velocity.y > 0:
+					velocity.y = speed
 		
 		# Drop masks
 		if Input.is_action_just_pressed("swapMask") and (maskNum > 0) and !bearAbility:
@@ -112,8 +122,6 @@ func _physics_process(delta: float) -> void:
 			if bearCharge < 100 and !bearTimerRunning:
 				bearTimerRunning = true
 				$BearTimer.start()
-		
-		
 		
 		
 		# Invisibility
@@ -135,7 +143,7 @@ func _physics_process(delta: float) -> void:
 			
 			
 		# Attack
-		if Input.is_action_pressed("attack"):
+		if Input.is_action_just_pressed("attack") and !dash:
 			# Can't stay invisible while attacking
 			if invisible:
 				invisible = false
@@ -143,7 +151,7 @@ func _physics_process(delta: float) -> void:
 				invisTimerRunning = false
 				$InvisTimer.stop()
 			# The fish shoots projectiles, so we will not go melee while it is equipped
-			if !fishAbility:
+			if !fishAbility and !armaAbility:
 				$Attack.show()
 				$AttackTimer.start()
 				if $AttackDetector.is_colliding() and ($AttackDetector.get_collider() != null) and !isAttacking:
@@ -154,17 +162,25 @@ func _physics_process(delta: float) -> void:
 							collider.isDamaged("bear")
 						else:
 							collider.isDamaged("normal")
-			else:
+			elif fishAbility:
 				if !justShot:
 					print("Shooting a bullet now...")
 					justShot = true
 					shoot.emit()
 					$ShootTimer.start()
+			# Armadillo Ability Stuff
+			if armaAbility:
+				if !dash and !dashCooldown:
+					dash = true
+					dashCooldown = true
+					speed = 1200.0
+					$DashTimer.start()
+				
 				
 		# Damage
 		for detector in $EnemyCollisionDetectors.get_children():
 				# Needed the "(detector.get_collider() != null)" or else it crashes after deleting the collider
-				if detector.is_colliding() and (detector.get_collider() != null) and playerAlive and !bearAbility:
+				if detector.is_colliding() and (detector.get_collider() != null) and playerAlive and !bearAbility and !dash:
 					var collider = detector.get_collider()
 					if collider.is_in_group("enemy"):
 						# If not attacking
@@ -393,5 +409,16 @@ func _on_bear_timer_timeout() -> void:
 
 
 func _on_shoot_timer_timeout() -> void:
-	print("Shoot timer timed out")
 	justShot = false
+
+
+func _on_dash_timer_timeout() -> void:
+	dash = false
+	speed = 300.0
+	velocity.x = 0
+	velocity.y = 0
+	$DashCooldownTimer.start()
+
+
+func _on_dash_cooldown_timer_timeout() -> void:
+	dashCooldown = false

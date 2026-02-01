@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 var direction = -1
 var pursuit = false
-const speed = 80
+var speed = 80
 var wait = false
 var stop = false
 var left
@@ -107,6 +107,8 @@ func isDamaged(type):
 
 func _on_pursuit_timer_timeout() -> void:
 	pursuit = false
+	speed = 80
+	print(speed)
 	$Alert.hide()
 	print("Done pursuing!")
 	# Put detectors back
@@ -127,6 +129,7 @@ func _on_detect_timer_timeout() -> void:
 		if detector.is_colliding() and (detector.get_collider() != null) and !player.invisible:
 			$Alert.show()
 			pursuit = true
+			speed = 160
 			$PursuitTimer.start()
 			print("Now pursuing!")
 	if pursuit:

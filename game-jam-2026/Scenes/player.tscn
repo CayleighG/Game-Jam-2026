@@ -317,6 +317,14 @@ one_shot = true
 [node name="ShootTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="DashTimer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[node name="DashCooldownTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
 [node name="GetUnstuck" type="RayCast2D" parent="."]
 position = Vector2(0, -49)
 target_position = Vector2(0, 106)
@@ -350,3 +358,5 @@ collision_mask = 2
 [connection signal="timeout" from="InvisTimer" to="." method="_on_invis_timer_timeout"]
 [connection signal="timeout" from="BearTimer" to="." method="_on_bear_timer_timeout"]
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
+[connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="DashCooldownTimer" to="." method="_on_dash_cooldown_timer_timeout"]
