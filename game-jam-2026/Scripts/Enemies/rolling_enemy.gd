@@ -131,7 +131,7 @@ func isDamaged(type):
 	elif type == "fish":
 		health -= 12.5
 		if $HealthBar.size.x > 0:
-			$HealthBar.size.x -= 3
+			$HealthBar.size.x -= 15
 	print("Enemy Health: ", health)
 	$HealthBar.show()
 	$HealthBarBackground.show()

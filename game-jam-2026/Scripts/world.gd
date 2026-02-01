@@ -144,7 +144,7 @@ func _on_sniper_enemy_sniper_fire(enemyPosition) -> void:
 # This function deletes doors if specific requirements have been met
 func checkEnemies():
 	enemyCount -= 1
-	if !door1Open and !is_instance_valid($Enemy1) and is_instance_valid($Doors/Door1):
+	if !door1Open and !$Enemy1 and is_instance_valid($Doors/Door1):
 		door1Open = true
 		$Doors/Door1.queue_free()
 	elif !door2Open and !is_instance_valid($rolling_enemy) and is_instance_valid($Doors/Door2):

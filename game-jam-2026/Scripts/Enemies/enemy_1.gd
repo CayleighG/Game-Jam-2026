@@ -85,6 +85,7 @@ func player_death():
 	$AnimatedSprite2D.stop()
 	
 func isDamaged(type):
+	pursuit = true
 	if type == "normal":
 		health -= 25
 		if $HealthBar.size.x > 0:
