@@ -12,6 +12,7 @@ var right
 var health
 
 signal rollerDefeat(Vector2)
+signal enemyDeath
 
 @onready var player = get_node("../Player")
 
@@ -137,6 +138,7 @@ func isDamaged(type):
 	if health <= 0:
 		print("Deleting enemy")
 		rollerDefeat.emit(self.global_position)
+		enemyDeath.emit()
 		queue_free()
 	else:
 		pursuit = true

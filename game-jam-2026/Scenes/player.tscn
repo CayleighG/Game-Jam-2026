@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cbwo4ao02kqa8"]
+[gd_scene load_steps=26 format=3 uid="uid://cbwo4ao02kqa8"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_ucbdq"]
 [ext_resource type="Texture2D" uid="uid://bt8ufjqnf3b6i" path="res://PNGs/Player/Test/Back.png" id="1_xylwy"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://6ktu1a507002" path="res://PNGs/Masks/fish_mask.png" id="7_wtpk4"]
 [ext_resource type="Texture2D" uid="uid://cgw3fefj5ajjj" path="res://PNGs/Player/slash_down.png" id="8_g3h15"]
 [ext_resource type="Texture2D" uid="uid://xard3f6p8rld" path="res://PNGs/Player/slash_up.png" id="9_dog65"]
+[ext_resource type="Texture2D" uid="uid://d4i7luohaq01k" path="res://PNGs/title_screen.png" id="9_wpowx"]
 [ext_resource type="Texture2D" uid="uid://c6odul8iwwqlf" path="res://PNGs/Player/slash_left.png" id="10_ta8by"]
 [ext_resource type="Texture2D" uid="uid://b5dgpuq8qm0gc" path="res://PNGs/Player/slash_right.png" id="11_ypvme"]
 
@@ -156,8 +157,27 @@ animations = [{
 "speed": 0.0
 }]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_22f0j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_wpowx")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nq2mk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yawdj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7cm7n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pkk24"]
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
-collision_mask = 6
+collision_mask = 38
 script = ExtResource("1_ucbdq")
 
 [node name="BackgroundColor" type="ColorRect" parent="."]
@@ -328,6 +348,50 @@ offset_right = -507.0
 offset_bottom = -260.0
 color = Color(0, 0.55, 0.00916666, 1)
 
+[node name="TitleScreen" type="AnimatedSprite2D" parent="HUD"]
+position = Vector2(5.00003, -5)
+scale = Vector2(0.608333, 0.611418)
+sprite_frames = SubResource("SpriteFrames_22f0j")
+
+[node name="StartGameButton" type="Button" parent="HUD"]
+offset_left = -301.0
+offset_top = 138.0
+offset_right = 317.0
+offset_bottom = 256.0
+theme_override_colors/font_color = Color(0.947333, 0.98, 0, 1)
+theme_override_font_sizes/font_size = 80
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_nq2mk")
+theme_override_styles/hover = SubResource("StyleBoxFlat_yawdj")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_7cm7n")
+theme_override_styles/normal = SubResource("StyleBoxFlat_pkk24")
+text = "Press to Start"
+
+[node name="EndGame" type="Label" parent="HUD"]
+offset_left = -292.0
+offset_top = -195.0
+offset_right = 293.0
+offset_bottom = -4.0
+theme_override_colors/font_color = Color(0.734317, 0.554792, 0, 1)
+text = "You have successfully collected and destroyed all the masks at this location!
+Congratulations!
+You are one step closer to finally shutting this operation down,
+once and for all!"
+horizontal_alignment = 1
+
+[node name="ExitButton" type="Button" parent="HUD"]
+offset_left = -73.0
+offset_top = 75.0
+offset_right = 82.0
+offset_bottom = 127.0
+text = "Exit"
+
+[node name="RestartButton" type="Button" parent="HUD"]
+offset_left = -65.0
+offset_top = 83.0
+offset_right = 67.0
+offset_bottom = 121.0
+text = "Try It Again!"
+
 [node name="EnemyCollisionDetectors" type="Node2D" parent="."]
 
 [node name="Detector1" type="RayCast2D" parent="EnemyCollisionDetectors"]
@@ -397,6 +461,11 @@ collision_mask = 4
 target_position = Vector2(-80, 0)
 collision_mask = 4
 
+[node name="ExitDetector" type="RayCast2D" parent="."]
+position = Vector2(0, 59)
+target_position = Vector2(0, -110)
+collision_mask = 128
+
 [node name="InvincibilityTimer" type="Timer" parent="."]
 one_shot = true
 
@@ -451,6 +520,9 @@ target_position = Vector2(27, 0)
 collision_mask = 2
 
 [connection signal="pressed" from="HUD/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="HUD/StartGameButton" to="." method="_on_start_game_pressed"]
+[connection signal="pressed" from="HUD/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="HUD/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
 [connection signal="timeout" from="InvisTimer" to="." method="_on_invis_timer_timeout"]

@@ -12,9 +12,10 @@ var right
 var health
 
 signal sniperDefeat(Vector2)
+signal sniperFire(Vector2)
+signal enemyDeath
 
 @onready var player = get_node("../Player")
-@onready var bullets = preload("res://Scenes/Enemies/enemy_bullet.tscn")
 
 func _ready():
 	health = 100
@@ -167,6 +168,7 @@ func isDamaged(type):
 	if health <= 0:
 		print("Deleting enemy")
 		sniperDefeat.emit(self.global_position)
+		enemyDeath.emit()
 		queue_free()
 
 func _on_pursuit_timer_timeout() -> void:
@@ -201,11 +203,7 @@ func _on_detect_timer_timeout() -> void:
 
 
 func _on_fire_timer_timeout() -> void:
-	print("Shot a bullet")
-	var bullet = bullets.instantiate()
-	get_tree().get_root().add_child(bullet)
-	bullet.global_position = global_position
-	bullet.flight(player.position)
+	sniperFire.emit(global_position)
 	firing = false
 
 

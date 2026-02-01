@@ -33,6 +33,8 @@ var justShot = false
 var dash = false
 var dashCooldown = false
 
+var inFrontOfExit = false
+
 signal shoot
 signal playerDeath
 signal restart
@@ -47,6 +49,9 @@ func _ready():
 	
 	$BackgroundColor.modulate = Color(0,0,0,0)
 	
+	$HUD/ExitButton.hide()
+	$HUD/RestartButton.hide()
+	$HUD/EndGame.hide()
 	$Attacks/AttackUp.hide()
 	$Attacks/AttackDown.hide()
 	$Attacks/AttackLeft.hide()
@@ -59,6 +64,8 @@ func _ready():
 	$HUD/Masks/FirstMaskSprite.play("idle")
 	$HUD/Masks/SecondMaskSprite.play("idle")
 	$AnimatedSprite2D.play("idle")
+	
+	set_physics_process(false)
 
 func _physics_process(delta: float) -> void:
 	# GET UNSTUCK
@@ -215,6 +222,15 @@ func _physics_process(delta: float) -> void:
 						# If not attacking
 						if !invulnerable:
 							playerDamaged(collider, delta)
+							
+		
+		# Exit
+		if $ExitDetector.is_colliding() and ($ExitDetector.get_collider() != null):
+			inFrontOfExit = true
+			$HUD/ExitButton.show()
+		else:
+			inFrontOfExit = false
+			$HUD/ExitButton.hide()
 
 		move_and_slide()
 		
@@ -521,3 +537,32 @@ func determineAttack():
 		$Attacks/AttackRight.show()
 	elif attackLeft:
 		$Attacks/AttackLeft.show()
+
+
+func _on_start_game_pressed() -> void:
+	set_physics_process(true)
+	$HUD/StartGameButton.hide()
+	$HUD/TitleScreen.hide()
+
+
+func _on_exit_button_pressed() -> void:
+	global_position = Vector2(0,0)
+	$BackgroundColor.modulate = Color(0,0,0,1)
+	$HUD/EndGame.show()
+	$HUD/RestartButton.show()
+	
+	$HUD/RetryButton.hide()
+	$HUD/GameOverLabel.hide()
+	$HUD/InvisBar.hide()
+	$HUD/InvisBarBackground.hide()
+	$HUD/BearAbility.hide()
+	$HUD/BearAbilityBackground.hide()
+	$HUD/Masks.hide()
+	$HUD/Health.hide()
+	$HUD/ExitButton.hide()
+	
+	set_physics_process(false)
+
+
+func _on_restart_button_pressed() -> void:
+	restart.emit()

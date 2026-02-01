@@ -11,6 +11,9 @@ var health
 
 @onready var player = get_node("../Player")
 
+signal enemyDefeat(Vector2)
+signal enemyDeath
+
 func _ready():
 	health = 100
 	velocity.x = speed
@@ -99,6 +102,8 @@ func isDamaged(type):
 	$HealthBarBackground.show()
 	if health <= 0:
 		print("Deleting enemy")
+		enemyDefeat.emit(self.global_position)
+		enemyDeath.emit()
 		queue_free()
 
 func _on_pursuit_timer_timeout() -> void:

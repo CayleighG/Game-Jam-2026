@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://cab00862wbtkg"]
+
+[ext_resource type="Texture2D" uid="uid://b3srdv5u6x0oi" path="res://PNGs/first_aid_kit.png" id="1_fk52f"]
+[ext_resource type="Script" path="res://Scripts/first_aid.gd" id="1_iolul"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cj2fh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_fk52f")
+}],
+"loop": true,
+"name": &"default",
+"speed": 0.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xo1dk"]
+radius = 41.0488
+
+[node name="FirstAid" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_iolul")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(5, -4)
+sprite_frames = SubResource("SpriteFrames_cj2fh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_xo1dk")
+
+[node name="Collision" type="Node2D" parent="."]
+
+[node name="RayCast2D" type="RayCast2D" parent="Collision"]
+target_position = Vector2(0, 41)
+
+[node name="RayCast2D2" type="RayCast2D" parent="Collision"]
+target_position = Vector2(-40, 0)
+
+[node name="RayCast2D3" type="RayCast2D" parent="Collision"]
+target_position = Vector2(0, -41)
+
+[node name="RayCast2D" type="RayCast2D" parent="Collision/RayCast2D3"]
+target_position = Vector2(41, 0)
