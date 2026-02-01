@@ -167,9 +167,6 @@ position = Vector2(-2043, -8962)
 [node name="SniperEnemy2" parent="." groups=["enemy"] instance=ExtResource("7_qw3cs")]
 position = Vector2(-1257, -9355)
 
-[node name="SniperEnemy3" parent="." groups=["enemy"] instance=ExtResource("7_qw3cs")]
-position = Vector2(-1717, -9341)
-
 [node name="SniperEnemy4" parent="." groups=["enemy"] instance=ExtResource("7_qw3cs")]
 position = Vector2(655, -6501)
 
@@ -307,9 +304,6 @@ position = Vector2(2385, -4777)
 [connection signal="enemyDeath" from="SniperEnemy2" to="." method="checkEnemies"]
 [connection signal="sniperDefeat" from="SniperEnemy2" to="." method="_on_sniper_enemy_sniper_defeat"]
 [connection signal="sniperFire" from="SniperEnemy2" to="." method="_on_sniper_enemy_sniper_fire"]
-[connection signal="enemyDeath" from="SniperEnemy3" to="." method="checkEnemies"]
-[connection signal="sniperDefeat" from="SniperEnemy3" to="." method="_on_sniper_enemy_sniper_defeat"]
-[connection signal="sniperFire" from="SniperEnemy3" to="." method="_on_sniper_enemy_sniper_fire"]
 [connection signal="enemyDeath" from="SniperEnemy4" to="." method="checkEnemies"]
 [connection signal="sniperDefeat" from="SniperEnemy4" to="." method="_on_sniper_enemy_sniper_defeat"]
 [connection signal="sniperFire" from="SniperEnemy4" to="." method="_on_sniper_enemy_sniper_fire"]
