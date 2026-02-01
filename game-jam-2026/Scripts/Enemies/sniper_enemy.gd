@@ -18,7 +18,7 @@ signal sniperDefeat(Vector2)
 
 func _ready():
 	health = 100
-	#velocity.x = speed
+	velocity.x = -speed
 	$AnimatedSprite2D.play("idle")
 	$HealthBar.hide()
 	$HealthBarBackground.hide()
@@ -111,9 +111,35 @@ func _physics_process(delta: float) -> void:
 					$AnimatedSprite2D.flip_h = false
 					if ($WallDetector.scale.x < 0):
 						$WallDetector.scale.x *= -1
-		#elif player.invisible:
-			#velocity.x = 0
-			#velocity.y = 0
+		
+		if !pursuit:
+			if $WallDetector.is_colliding():
+				direction = direction * -1
+				# Flip the WallDetector
+				$WallDetector.scale.x *= -1
+				# Flips the detectors in the enemy's view
+				for detector in $View.get_children():
+					detector.scale.x *= -1
+				
+			if $TopandBottomDetector.is_colliding():
+				if velocity.y < 0:
+					velocity.y = speed
+				else:
+					velocity.y = -speed
+				$TopandBottomDetector.scale.y *= -1
+	
+			if direction == 1:
+				velocity.x = speed
+				$AnimatedSprite2D.flip_h = true
+				#$View.look_at(Vector2($View.global_position.x - 10, $View.global_position.y))
+				if ($WallDetector.scale.x > 0):
+					$WallDetector.scale.x *= -1
+			else: 
+				velocity.x = -speed
+				$AnimatedSprite2D.flip_h = false
+				#$View.look_at(Vector2($View.global_position.x + 10, $View.global_position.y))
+				if ($WallDetector.scale.x < 0):
+					$WallDetector.scale.x *= -1
 
 		move_and_slide()
 
@@ -122,6 +148,7 @@ func player_death():
 	$AnimatedSprite2D.stop()
 	
 func isDamaged(type):
+	pursuit = true
 	if type == "normal":
 		health -= 25
 		if $HealthBar.size.x > 0:
