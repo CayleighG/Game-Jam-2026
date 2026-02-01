@@ -3,6 +3,7 @@ extends Node2D
 @onready var arma_mask = preload("res://Scenes/Masks/armadillo_mask.tscn")
 @onready var bear_mask = preload("res://Scenes/Masks/bear_mask.tscn")
 @onready var fish_mask = preload("res://Scenes/Masks/fish_mask.tscn")
+@onready var player_bullets = preload("res://Scenes/player_bullet.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
@@ -70,3 +71,12 @@ func _on_fish_mask_obtained(mask) -> void:
 		$Player.getMask("fish")
 		$Player.maskNum += 1
 		mask.queue_free()
+
+
+func _on_player_shoot() -> void:
+	print("Shot a bullet")
+	var bullet = player_bullets.instantiate()
+	get_tree().get_root().add_child(bullet)
+	bullet.global_position = $Player.global_position
+	#bullet.direction = (get_global_mouse_position() - global_position).normalized()
+	bullet.flight()

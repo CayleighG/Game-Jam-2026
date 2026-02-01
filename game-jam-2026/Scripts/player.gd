@@ -7,7 +7,9 @@ var invisBarCharge: int = 100
 var invisTimerRunning = false
 var isAttacking = false
 var playerHealth: int = 5;
+
 const speed = 300.0
+var direction
 
 var maskNum
 var armaMask = false
@@ -21,6 +23,9 @@ var fishAbility = false
 var bearCharge: int = 100
 var bearTimerRunning = false
 
+var justShot = false
+
+signal shoot
 signal playerDeath
 signal restart
 
@@ -53,7 +58,7 @@ func _physics_process(delta: float) -> void:
 	if playerAlive:
 		# Get the input direction and handle the movement/deceleration.
 		# As good practice, you should replace UI actions with custom gameplay actions.
-		var direction := Input.get_axis("left", "right")
+		direction = Input.get_axis("left", "right")
 		
 		if !Input.is_anything_pressed():
 			$AnimatedSprite2D.play("idle");
@@ -91,28 +96,14 @@ func _physics_process(delta: float) -> void:
 			velocity.x = direction * speed
 		
 		# Drop masks
-		if Input.is_action_just_pressed("swapMask") and (maskNum > 0):
+		if Input.is_action_just_pressed("swapMask") and (maskNum > 0) and !bearAbility:
 			swapMask()
-		if Input.is_action_just_pressed("dropMask") and (maskNum > 0):
+		if Input.is_action_just_pressed("dropMask") and (maskNum > 0) and !bearAbility:
 			dropMask()
 		if Input.is_action_just_pressed("ability") and bearCharge == 100:
 			abilityCheck()
 			
-		# Bear Timer
-		#if bearAbility:
-			#$HUD/BearAbilityBackground.show()
-			#$HUD/BearAbility.show()
-			#if bearCharge > 0:
-				#$BearTimer.start()
-			#else:
-				#$BearTimer.stop()
-				#bearAbility = false
-				#if $HUD/Masks/SecondMaskSprite.animation != "bear":
-					#bearMask = false
-				#$HUD/Masks/FirstMaskSprite.play("idle")
-		#if (bearCharge < 100) and (!bearAbility):
-			#$BearTimer.start()
-			
+		# Bear Ability Stuff	
 		if bearAbility:
 			if !bearTimerRunning:
 				bearTimerRunning = true
@@ -141,6 +132,8 @@ func _physics_process(delta: float) -> void:
 				invisTimerRunning = true
 				$InvisTimer.start()
 			
+			
+			
 		# Attack
 		if Input.is_action_pressed("attack"):
 			# Can't stay invisible while attacking
@@ -161,6 +154,12 @@ func _physics_process(delta: float) -> void:
 							collider.isDamaged("bear")
 						else:
 							collider.isDamaged("normal")
+			else:
+				if !justShot:
+					print("Shooting a bullet now...")
+					justShot = true
+					shoot.emit()
+					$ShootTimer.start()
 				
 		# Damage
 		for detector in $EnemyCollisionDetectors.get_children():
@@ -234,9 +233,11 @@ func getMask(maskName):
 		elif maskName == "bear":
 			$HUD/Masks/FirstMaskSprite.play("bear")
 		elif maskName == "fish":
+			print("Fish mask")
 			$HUD/Masks/FirstMaskSprite.play("fish")
 	elif $HUD/Masks/SecondMaskSprite.animation == "idle":
 		if maskName == "armadillo":
+			print("Fish mask")
 			$HUD/Masks/SecondMaskSprite.play("armadillo")
 		elif maskName == "bear":
 			$HUD/Masks/SecondMaskSprite.play("bear")
@@ -248,6 +249,8 @@ func swapMask():
 	armaAbility = false
 	bearAbility = false
 	fishAbility = false
+	$HUD/Masks/FirstMask.color = Color("White")
+	
 	if $HUD/Masks/SecondMaskSprite.animation == "idle":
 		if armaMask:
 			$HUD/Masks/SecondMaskSprite.play("armadillo")
@@ -299,6 +302,7 @@ func dropMask():
 			if $HUD/Masks/FirstMaskSprite.animation != "fish":
 				fishMask = false
 	elif $HUD/Masks/FirstMaskSprite.animation != "idle":
+		$HUD/Masks/FirstMask.color = Color("White")
 		if $HUD/Masks/FirstMaskSprite.animation == "armadillo":
 			$HUD/Masks/FirstMaskSprite.play("idle")
 			if $HUD/Masks/SecondMaskSprite.animation != "armadillo":
@@ -321,10 +325,13 @@ func dropMask():
 func abilityCheck():
 	if $HUD/Masks/FirstMaskSprite.animation == "armadillo":
 		armaAbility = true
+		$HUD/Masks/FirstMask.color = Color("Pink")
 	elif $HUD/Masks/FirstMaskSprite.animation == "bear":
 		bearAbility = true
+		$HUD/Masks/FirstMask.color = Color("Goldenrod")
 	elif $HUD/Masks/FirstMaskSprite.animation == "fish":
 		fishAbility = true
+		$HUD/Masks/FirstMask.color = Color("Royal_Blue")
 
 ## Detects when the timer for the invincibility frames ends
 func _on_invincibility_timer_timeout() -> void:
@@ -375,9 +382,16 @@ func _on_bear_timer_timeout() -> void:
 			$HUD/BearAbilityBackground.hide()
 			$HUD/BearAbility.hide()
 			$HUD/Masks/FirstMaskSprite.play("idle")
+			$HUD/Masks/FirstMask.color = Color(255, 255, 255)
+			maskNum -= 1
 			if $HUD/Masks/SecondMaskSprite.animation != "bear":
 				bearMask = false
 			bearAbility = false
 	else:
 		bearCharge += 1
 		$HUD/BearAbility.size.x += 3
+
+
+func _on_shoot_timer_timeout() -> void:
+	print("Shoot timer timed out")
+	justShot = false

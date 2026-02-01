@@ -90,10 +90,14 @@ func isDamaged(type):
 		health -= 50
 		if $HealthBar.size.x > 0:
 			$HealthBar.size.x -= 60
+	elif type == "fish":
+		health -= 12.5
+		if $HealthBar.size.x > 0:
+			$HealthBar.size.x -= 3
 	print("Enemy Health: ", health)
 	$HealthBar.show()
 	$HealthBarBackground.show()
-	if health == 0:
+	if health <= 0:
 		print("Deleting enemy")
 		queue_free()
 

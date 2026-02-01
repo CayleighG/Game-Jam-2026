@@ -86,6 +86,9 @@ func _physics_process(delta: float) -> void:
 						$FireTimer.start()
 				else:
 					velocity = position.direction_to(player.position) * speed
+					if !firing:
+						firing = true
+						$FireTimer.start()
 				# Check which way the enemy should be facing
 				if (velocity.x > 0):
 					direction = 1
@@ -127,10 +130,14 @@ func isDamaged(type):
 		health -= 50
 		if $HealthBar.size.x > 0:
 			$HealthBar.size.x -= 60
+	elif type == "fish":
+		health -= 12.5
+		if $HealthBar.size.x > 0:
+			$HealthBar.size.x -= 15
 	print("Enemy Health: ", health)
 	$HealthBar.show()
 	$HealthBarBackground.show()
-	if health == 0:
+	if health <= 0:
 		print("Deleting enemy")
 		sniperDefeat.emit(self.global_position)
 		queue_free()

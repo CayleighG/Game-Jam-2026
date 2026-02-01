@@ -1,0 +1,71 @@
+[gd_scene load_steps=5 format=3 uid="uid://cd0mr5q52gjm8"]
+
+[ext_resource type="Script" path="res://Scripts/player_bullet.gd" id="1_jn07p"]
+[ext_resource type="Texture2D" uid="uid://ch8hj7626wsmq" path="res://PNGs/Player/player_bullet.png" id="2_mssp3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_y8pme"]
+radius = 19.0263
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_iiqle"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_mssp3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 0.0
+}]
+
+[node name="PlayerBullet" type="CharacterBody2D"]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("1_jn07p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_y8pme")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_iiqle")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(5.36442e-07, 0.5)
+scale = Vector2(2.1, 2.05)
+
+[node name="Collision" type="Node2D" parent="."]
+scale = Vector2(0.5, 0.5)
+
+[node name="RayCast2D" type="RayCast2D" parent="Collision"]
+target_position = Vector2(0, 38)
+collision_mask = 4
+
+[node name="RayCast2D2" type="RayCast2D" parent="Collision"]
+target_position = Vector2(-38, 0)
+collision_mask = 4
+
+[node name="RayCast2D3" type="RayCast2D" parent="Collision"]
+target_position = Vector2(0, -37)
+collision_mask = 4
+
+[node name="RayCast2D4" type="RayCast2D" parent="Collision"]
+target_position = Vector2(37, 0)
+collision_mask = 4
+
+[node name="RayCast2D5" type="RayCast2D" parent="Collision"]
+target_position = Vector2(-27, 24)
+collision_mask = 4
+
+[node name="RayCast2D6" type="RayCast2D" parent="Collision"]
+target_position = Vector2(-23, -29)
+collision_mask = 4
+
+[node name="RayCast2D7" type="RayCast2D" parent="Collision"]
+target_position = Vector2(27, -25)
+collision_mask = 4
+
+[node name="RayCast2D8" type="RayCast2D" parent="Collision"]
+target_position = Vector2(29, 23)
+collision_mask = 4
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

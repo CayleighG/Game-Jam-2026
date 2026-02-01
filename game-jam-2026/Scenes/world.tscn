@@ -56,6 +56,9 @@ position = Vector2(508, 405)
 [node name="TankEnemy" parent="." groups=["enemy"] instance=ExtResource("6_7ytpm")]
 position = Vector2(141, -573)
 
+[node name="TankEnemy2" parent="." groups=["enemy"] instance=ExtResource("6_7ytpm")]
+position = Vector2(-947, 620)
+
 [node name="SniperEnemy" parent="." groups=["enemy"] instance=ExtResource("7_qw3cs")]
 position = Vector2(2295, 524)
 
@@ -64,6 +67,8 @@ position = Vector2(1161, 563)
 
 [connection signal="rollerDefeat" from="rolling_enemy" to="." method="_on_rolling_enemy_roller_defeat"]
 [connection signal="tankDefeat" from="TankEnemy" to="." method="_on_tank_enemy_tank_defeat"]
+[connection signal="tankDefeat" from="TankEnemy2" to="." method="_on_tank_enemy_tank_defeat"]
 [connection signal="sniperDefeat" from="SniperEnemy" to="." method="_on_sniper_enemy_sniper_defeat"]
 [connection signal="playerDeath" from="Player" to="." method="_on_player_death"]
 [connection signal="restart" from="Player" to="." method="_on_restart"]
+[connection signal="shoot" from="Player" to="." method="_on_player_shoot"]

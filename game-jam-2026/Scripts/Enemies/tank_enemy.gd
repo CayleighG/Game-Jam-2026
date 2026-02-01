@@ -92,11 +92,15 @@ func isDamaged(type):
 		health -= 20
 		if $HealthBar.size.x > 0:
 			$HealthBar.size.x -= 24
+	elif type == "fish":
+		health -= 5
+		if $HealthBar.size.x > 0:
+			$HealthBar.size.x -= 6
 	pursuit = true
 	print("Enemy Health: ", health)
 	$HealthBar.show()
 	$HealthBarBackground.show()
-	if health == 0:
+	if health <= 0:
 		print("Deleting enemy")
 		tankDefeat.emit(self.global_position)
 		queue_free()
