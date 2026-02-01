@@ -19,7 +19,6 @@ var door6Open = false
 var door7Open = false
 var door8Open = false
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	enemyCount = 0
@@ -168,5 +167,27 @@ func checkEnemies():
 		$Doors/Door7.queue_free()
 		
 	if !door8Open and (enemyCount == 0) and is_instance_valid($Doors/Door8):
+		$DialogueBoxes/Box8.collision_layer = 10
 		door8Open = true
 		$Doors/Door8.queue_free()
+
+
+func _on_dialogue_detected(type, collider) -> void:
+	$Player/HUD/DialogueBox.show()
+	if type == 1:
+		$Player/HUD/DialogueBox.text = "Finally made it in... now, time to get the masks back from these creeps. \nThe power is too much for them. I need to either gather or destroy every mask in this facility."
+	elif type == 2:
+		$Player/HUD/DialogueBox.text = "I think I hear someone up ahead... Maybe I could sneak by with {Space}? \nNo, looks like he's guarding the door. I better be ready to attack with {Left Click}."
+	elif type == 3:
+		$Player/HUD/DialogueBox.text = "There's someone else... I think they have one of the masks!"
+	elif type == 4:
+		$Player/HUD/DialogueBox.text = "Nice, he dropped a mask!\n Now I can equip it with {Right Click} and use its ability with {Shift}. \nAlthough, it looks a bit fragile... \nmaybe I should keep it in my second pocket if I don't want it to break in battle."
+	elif type == 5:
+		$Player/HUD/DialogueBox.text = "This mask looks like an armadillo. \nI bet I can move very fast if I {Left Click}, although it seems like it prevents me from attacking.\nHm. I suppose I can drop it with {R} if I don't want it taking up space in my pocket."
+	elif type == 6:
+		$Player/HUD/DialogueBox.text = "Urgh, I can smell a bear.\nThey're pretty tanky, but I would love to have some of that firepower for myself."
+	elif type == 7:
+		$Player/HUD/DialogueBox.text = "Hm, smells like the sea. I bet there's a sniper nearby.\nI wouldn't mind getting my claws on a fish mask.\nI could definitely use some range to my attacks."
+	elif type == 8:
+		$Player/HUD/DialogueBox.text = "I need to get all the masks before I can leave!"
+	

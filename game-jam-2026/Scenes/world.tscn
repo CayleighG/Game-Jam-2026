@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://b0o6slnmw6wb0"]
+[gd_scene load_steps=23 format=4 uid="uid://b0o6slnmw6wb0"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_nisrv"]
 [ext_resource type="Texture2D" uid="uid://dida0stvmj7kd" path="res://PNGs/background.png" id="2_ci6s3"]
@@ -36,6 +36,30 @@ tile_size = Vector2i(128, 128)
 physics_layer_0/collision_layer = 2
 physics_layer_0/collision_mask = 5
 sources/0 = SubResource("TileSetAtlasSource_ov4a1")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wfbrl"]
+size = Vector2(654, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2sos3"]
+size = Vector2(615, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exkyt"]
+size = Vector2(577, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hmiri"]
+size = Vector2(468.5, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d7j4d"]
+size = Vector2(401.5, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1tn7c"]
+size = Vector2(1205.75, 43.4375)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bub7e"]
+size = Vector2(351, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_twkjn"]
+size = Vector2(662, 18.375)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fteau"]
 size = Vector2(256, 109)
@@ -155,7 +179,81 @@ position = Vector2(-4580, -10120)
 [node name="SniperEnemy6" parent="." groups=["enemy"] instance=ExtResource("7_qw3cs")]
 position = Vector2(-3391, -8319)
 
+[node name="DialogueBoxes" type="Node2D" parent="."]
+position = Vector2(-1933, -8510)
+
+[node name="Box1" type="CharacterBody2D" parent="DialogueBoxes"]
+position = Vector2(4147, 4291)
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DialogueBoxes/Box1"]
+position = Vector2(163, -380)
+shape = SubResource("RectangleShape2D_wfbrl")
+
+[node name="Box2" type="CharacterBody2D" parent="DialogueBoxes"]
+position = Vector2(3477, 3870)
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DialogueBoxes/Box2"]
+position = Vector2(183.5, -4)
+shape = SubResource("RectangleShape2D_2sos3")
+
+[node name="Box3" type="CharacterBody2D" parent="DialogueBoxes"]
+position = Vector2(238, 3025)
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DialogueBoxes/Box3"]
+position = Vector2(1747, 773)
+shape = SubResource("RectangleShape2D_exkyt")
+
+[node name="Box4" type="CharacterBody2D" parent="DialogueBoxes"]
+position = Vector2(913, 3120)
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DialogueBoxes/Box4"]
+position = Vector2(-656, 672)
+shape = SubResource("RectangleShape2D_hmiri")
+
+[node name="Box5" type="CharacterBody2D" parent="DialogueBoxes"]
+position = Vector2(1313, 2987)
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DialogueBoxes/Box5"]
+position = Vector2(-1599.75, 802)
+shape = SubResource("RectangleShape2D_d7j4d")
+
+[node name="Box6" type="CharacterBody2D" parent="DialogueBoxes"]
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DialogueBoxes/Box6"]
+position = Vector2(0.125, 2279.28)
+shape = SubResource("RectangleShape2D_1tn7c")
+
+[node name="Box7" type="CharacterBody2D" parent="DialogueBoxes"]
+position = Vector2(890, 1170)
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DialogueBoxes/Box7"]
+position = Vector2(723.5, -45)
+shape = SubResource("RectangleShape2D_bub7e")
+
+[node name="Box8" type="CharacterBody2D" parent="DialogueBoxes"]
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DialogueBoxes/Box8"]
+position = Vector2(-1216, 344.813)
+shape = SubResource("RectangleShape2D_twkjn")
+
 [node name="Exit" type="CharacterBody2D" parent="."]
+visible = false
 position = Vector2(-1933, -8510)
 collision_layer = 128
 collision_mask = 0
@@ -165,7 +263,7 @@ position = Vector2(15, -39.5)
 shape = SubResource("RectangleShape2D_fteau")
 
 [node name="Player" parent="." instance=ExtResource("2_cok2j")]
-position = Vector2(2412, -4795)
+position = Vector2(2385, -4777)
 
 [connection signal="enemyDeath" from="Enemy1" to="." method="checkEnemies"]
 [connection signal="enemyDefeat" from="Enemy1" to="." method="_on_enemy_defeat"]
@@ -221,6 +319,7 @@ position = Vector2(2412, -4795)
 [connection signal="enemyDeath" from="SniperEnemy6" to="." method="checkEnemies"]
 [connection signal="sniperDefeat" from="SniperEnemy6" to="." method="_on_sniper_enemy_sniper_defeat"]
 [connection signal="sniperFire" from="SniperEnemy6" to="." method="_on_sniper_enemy_sniper_fire"]
+[connection signal="dialogue" from="Player" to="." method="_on_dialogue_detected"]
 [connection signal="playerDeath" from="Player" to="." method="_on_player_death"]
 [connection signal="restart" from="Player" to="." method="_on_restart"]
 [connection signal="shoot" from="Player" to="." method="_on_player_shoot"]

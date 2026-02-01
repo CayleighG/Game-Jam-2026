@@ -34,10 +34,14 @@ var dash = false
 var dashCooldown = false
 
 var inFrontOfExit = false
+var talking = false
+var dialogueNum = 0
+var boxCollider
 
 signal shoot
 signal playerDeath
 signal restart
+signal dialogue(type: int, collider: String)
 
 func _ready():
 	invisible = false
@@ -51,6 +55,7 @@ func _ready():
 	
 	$HUD/ExitButton.hide()
 	$HUD/RestartButton.hide()
+	$HUD/DialogueBox.hide()
 	$HUD/EndGame.hide()
 	$Attacks/AttackUp.hide()
 	$Attacks/AttackDown.hide()
@@ -223,6 +228,20 @@ func _physics_process(delta: float) -> void:
 						if !invulnerable:
 							playerDamaged(collider, delta)
 							
+		# Dialogue
+		if $DialogueDetector.is_colliding() and !talking:
+			talking = true
+			if dialogueNum < 8:
+				dialogueNum += 1
+			boxCollider = $DialogueDetector.get_collider()
+			print("Dialogue Num: ", dialogueNum)
+			dialogue.emit(dialogueNum, boxCollider.name)
+		elif !$DialogueDetector.is_colliding():
+			if dialogueNum < 8:
+				boxCollider.collision_layer = 10
+			talking = false
+			$HUD/DialogueBox.hide()
+		
 		
 		# Exit
 		if $ExitDetector.is_colliding() and ($ExitDetector.get_collider() != null):
