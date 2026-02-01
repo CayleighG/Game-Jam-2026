@@ -11,6 +11,11 @@ var playerHealth: int = 5;
 var speed = 300.0
 var direction
 
+var attackUp
+var attackDown
+var attackLeft
+var attackRight
+
 var maskNum
 var armaMask = false
 var bearMask = false
@@ -34,13 +39,23 @@ signal restart
 
 func _ready():
 	invisible = false
+	attackUp = false
+	attackDown = false
+	attackLeft = false
+	attackRight = false
 	maskNum = 0
+	
 	$BackgroundColor.modulate = Color(0,0,0,0)
-	$Attack.hide()
+	
+	$Attacks/AttackUp.hide()
+	$Attacks/AttackDown.hide()
+	$Attacks/AttackLeft.hide()
+	$Attacks/AttackRight.hide()
 	$HUD/GameOverLabel.hide()
 	$HUD/RetryButton.hide()
 	$HUD/BearAbilityBackground.hide()
 	$HUD/BearAbility.hide()
+	
 	$HUD/Masks/FirstMaskSprite.play("idle")
 	$HUD/Masks/SecondMaskSprite.play("idle")
 	$AnimatedSprite2D.play("idle")
@@ -72,28 +87,40 @@ func _physics_process(delta: float) -> void:
 			if Input.is_action_pressed("right") and !dash:
 				$AnimatedSprite2D.flip_h = true
 				#$Attack.flip_h = not $Attack.flip_h
-				#$AttackDetector.scale.x *= -1
 				$AttackDetector.look_at(Vector2(position.x - 50, position.y))
 				$AttackDetector.scale.x = 1
-				#$AnimatedSprite2D.play("walk_sideways")
+				attackUp = false
+				attackDown = false
+				attackRight = true
+				attackLeft = false
 			
 			elif Input.is_action_pressed("left") and !dash:
 				$AnimatedSprite2D.flip_h = false
 				#$Attack.flip_h = not $Attack.flip_h
 				$AttackDetector.rotation = 0
 				$AttackDetector.scale.x = 1
-				#$AnimatedSprite2D.play("walk_sideways")
+				attackUp = false
+				attackDown = false
+				attackRight = false
+				attackLeft = true
 		
 			if Input.is_action_pressed("up"):
 				velocity.y = -speed
 				$AttackDetector.look_at(Vector2(position.x, position.y + 50))
 				$AttackDetector.scale.x = 1.5
-				#$AnimatedSprite2D.play("walk_back")
+				attackUp = true
+				attackDown = false
+				attackRight = false
+				attackLeft = false
 			elif Input.is_action_pressed("down"):
 				velocity.y = speed
 				$AttackDetector.look_at(Vector2(position.x, position.y - 50))
 				$AttackDetector.scale.x = 1.5
 				$AnimatedSprite2D.play("idle")
+				attackUp = false
+				attackDown = true
+				attackRight = false
+				attackLeft = false
 			else:
 				velocity.y = 0
 			
@@ -152,7 +179,8 @@ func _physics_process(delta: float) -> void:
 				$InvisTimer.stop()
 			# The fish shoots projectiles, so we will not go melee while it is equipped
 			if !fishAbility and !armaAbility:
-				$Attack.show()
+				determineAttack()
+				#$Attack.show()
 				$AttackTimer.start()
 				if $AttackDetector.is_colliding() and ($AttackDetector.get_collider() != null) and !isAttacking:
 					isAttacking = true
@@ -161,6 +189,7 @@ func _physics_process(delta: float) -> void:
 						if(bearAbility):
 							collider.isDamaged("bear")
 						else:
+							print("Damaging enemy")
 							collider.isDamaged("normal")
 			elif fishAbility:
 				if !justShot:
@@ -199,15 +228,37 @@ func playerDamaged(enemy, delta):
 		$AnimatedSprite2D.modulate.a = 1
 		invisTimerRunning = false
 		$InvisTimer.stop()
-	#playerHealth -= 1
+	playerHealth -= 1
 	invulnerable = true
 	knockback(enemy, delta)
+	
+	# Lose mask, if equipped
+	if $HUD/Masks/FirstMaskSprite.animation != "idle":
+		maskNum -= 1
+		$HUD/Masks/FirstMaskSprite.play("idle")
+		$HUD/Masks/FirstMask.color = Color("White")
+		if armaAbility:
+			armaAbility = false
+		elif bearAbility:
+			bearAbility = false
+		elif fishAbility:
+			fishAbility = false
+			
+		if $HUD/Masks/SecondMaskSprite.animation != "armadillo":
+			armaMask = false
+		elif $HUD/Masks/SecondMaskSprite.animation != "bear":
+			bearMask = false
+		elif $HUD/Masks/SecondMaskSprite.animation != "fish":
+			fishMask = false
+	
+	checkHealthBar()
 	
 	if (playerHealth > 0):
 		# Turns player opacity to 0.5
 		$AnimatedSprite2D.modulate.a = 0.5
 		$InvincibilityTimer.start()
 	
+	# DEATH
 	else:
 		$BackgroundColor.modulate = Color(0,0,0,1)
 		playerAlive = false
@@ -365,7 +416,10 @@ func _on_retry_button_pressed() -> void:
 
 func _on_attack_timer_timeout() -> void:
 	isAttacking = false
-	$Attack.hide()
+	$Attacks/AttackUp.hide()
+	$Attacks/AttackDown.hide()
+	$Attacks/AttackLeft.hide()
+	$Attacks/AttackRight.hide()
 
 
 func _on_invis_timer_timeout() -> void:
@@ -422,3 +476,48 @@ func _on_dash_timer_timeout() -> void:
 
 func _on_dash_cooldown_timer_timeout() -> void:
 	dashCooldown = false
+	
+func checkHealthBar():
+	$HUD/Health/Health1.show()
+	$HUD/Health/Health2.show()
+	$HUD/Health/Health3.show()
+	$HUD/Health/Health4.show()
+	$HUD/Health/Health5.show()
+	if playerHealth == 4:
+		$HUD/Health/Health1.hide()
+	elif playerHealth == 3:
+		$HUD/Health/Health1.hide()
+		$HUD/Health/Health2.hide()
+	elif playerHealth == 2:
+		$HUD/Health/Health1.hide()
+		$HUD/Health/Health2.hide()
+		$HUD/Health/Health3.hide()
+	elif playerHealth == 1:
+		$HUD/Health/Health1.hide()
+		$HUD/Health/Health2.hide()
+		$HUD/Health/Health3.hide()
+		$HUD/Health/Health4.hide()
+	#DEATH
+	elif playerHealth <= 0:
+		$HUD/Health.hide()
+		$HUD/Masks.hide()
+		$HUD/BearAbility.hide()
+		$HUD/BearAbilityBackground.hide()
+		$HUD/InvisBar.hide()
+		$HUD/InvisBarBackground.hide()
+
+func determineAttack():
+	print("Choosing attack")
+	print("attackUp = ", attackUp)
+	print("attackDown = ", attackDown)
+	print("attackLeft = ", attackLeft)
+	print("attackRight = ", attackRight)
+	if attackUp:
+		print("Showing AttackUp")
+		$Attacks/AttackUp.show()
+	elif attackDown:
+		$Attacks/AttackDown.show()
+	elif attackRight:
+		$Attacks/AttackRight.show()
+	elif attackLeft:
+		$Attacks/AttackLeft.show()

@@ -79,9 +79,13 @@ func _physics_process(delta: float) -> void:
 				#print(distance)
 				# If the player is not within attacking range
 				if distance > 400 and !dashAttack:
+					$AnimatedSprite2D.scale.x = 0.4
+					$AnimatedSprite2D.scale.y = 0.4
 					$AnimatedSprite2D.play("idle")
 					velocity = position.direction_to(player.global_position) * speed
 				else:
+					$AnimatedSprite2D.scale.x = 1
+					$AnimatedSprite2D.scale.y = 1
 					$AnimatedSprite2D.play("attack")
 					if !dashAttack:
 						dashAttack = true
@@ -102,6 +106,8 @@ func _physics_process(delta: float) -> void:
 						$WallDetector.scale.x *= -1
 		elif player.invisible:
 			$DashTimer.stop()
+			$AnimatedSprite2D.scale.x = 0.4
+			$AnimatedSprite2D.scale.y = 0.4
 			$AnimatedSprite2D.play("idle")
 			dashCooldown = false
 			dashAttack = false
@@ -169,6 +175,8 @@ func _on_dash_timer_timeout() -> void:
 	dashAttack = false
 	if !dashCooldown:
 		dashCooldown = true
+		$AnimatedSprite2D.scale.x = 0.4
+		$AnimatedSprite2D.scale.y = 0.4
 		$AnimatedSprite2D.play("idle")
 		$DashTimer.start()
 	else:

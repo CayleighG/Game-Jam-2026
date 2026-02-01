@@ -1,25 +1,21 @@
-[gd_scene load_steps=8 format=3 uid="uid://ca1dbpidcu7s7"]
+[gd_scene load_steps=7 format=3 uid="uid://ca1dbpidcu7s7"]
 
 [ext_resource type="Script" path="res://Scripts/Enemies/enemy_1.gd" id="1_ngogt"]
-[ext_resource type="Texture2D" uid="uid://cka5otlxh08po" path="res://PNGs/Enemies/enemy_1.png" id="1_wqs2n"]
-[ext_resource type="Texture2D" uid="uid://c40s2a0lt6mff" path="res://PNGs/Enemies/enemy_2.png" id="2_w883n"]
+[ext_resource type="Texture2D" uid="uid://bybo03xoy8xr2" path="res://PNGs/Enemies/enemy.png" id="2_t1tei"]
 [ext_resource type="Texture2D" uid="uid://by8ty1d2c2qv2" path="res://PNGs/Enemies/alert.png" id="4_dvwxy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lbo0t"]
-size = Vector2(126, 115)
+size = Vector2(71, 167)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ucm5w"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_wqs2n")
-}, {
-"duration": 1.0,
-"texture": ExtResource("2_w883n")
+"texture": ExtResource("2_t1tei")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 0.0
 }]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_phoqs"]
@@ -35,38 +31,39 @@ animations = [{
 
 [node name="Enemy1" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 4
-collision_mask = 2
+collision_mask = 6
 script = ExtResource("1_ngogt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, 7.5)
+position = Vector2(-10.5, 16.5)
 shape = SubResource("RectangleShape2D_lbo0t")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_ucm5w")
 animation = &"idle"
 
 [node name="WallDetector" type="RayCast2D" parent="."]
-target_position = Vector2(-66, -1)
+target_position = Vector2(-53, 0)
 collision_mask = 2
 
 [node name="TopandBottomDetector" type="RayCast2D" parent="."]
-target_position = Vector2(0, -78)
+target_position = Vector2(0, -73)
 collision_mask = 2
 
 [node name="HealthBarBackground" type="ColorRect" parent="."]
-offset_left = -62.0
-offset_top = -80.0
-offset_right = 66.0
-offset_bottom = -61.0
+offset_left = -63.0
+offset_top = -90.0
+offset_right = 65.0
+offset_bottom = -71.0
 color = Color(0, 0, 0, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="HealthBar" type="ColorRect" parent="."]
-offset_left = -59.0
-offset_top = -76.0
-offset_right = 61.0
-offset_bottom = -66.0
+offset_left = -60.0
+offset_top = -86.0
+offset_right = 60.0
+offset_bottom = -76.0
 color = Color(0.263748, 0.586533, 0, 1)
 metadata/_edit_use_anchors_ = true
 
@@ -132,7 +129,7 @@ wait_time = 3.0
 one_shot = true
 
 [node name="Alert" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -113)
+position = Vector2(-1, -123)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_phoqs")
 

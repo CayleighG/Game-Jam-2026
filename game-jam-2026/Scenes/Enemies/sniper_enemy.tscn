@@ -1,21 +1,21 @@
 [gd_scene load_steps=7 format=3 uid="uid://dlcmseos75nxh"]
 
 [ext_resource type="Script" path="res://Scripts/Enemies/sniper_enemy.gd" id="1_g2mjt"]
-[ext_resource type="Texture2D" uid="uid://c2jpajutv2kth" path="res://PNGs/Enemies/sniper.png" id="2_fexuo"]
+[ext_resource type="Texture2D" uid="uid://cmr3wp5ge7yfi" path="res://PNGs/Enemies/fish_enemy.png" id="2_ubhpi"]
 [ext_resource type="Texture2D" uid="uid://by8ty1d2c2qv2" path="res://PNGs/Enemies/alert.png" id="3_y063f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_su86w"]
-size = Vector2(126, 122)
+size = Vector2(72, 167)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_3xqxw"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_fexuo")
+"texture": ExtResource("2_ubhpi")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 0.0
 }]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_aj5qo"]
@@ -31,38 +31,39 @@ animations = [{
 
 [node name="SniperEnemy" type="CharacterBody2D"]
 collision_layer = 4
-collision_mask = 2
+collision_mask = 6
 script = ExtResource("1_g2mjt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, 4)
+position = Vector2(-10, 15.5)
 shape = SubResource("RectangleShape2D_su86w")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_3xqxw")
 animation = &"idle"
 
 [node name="WallDetector" type="RayCast2D" parent="."]
-target_position = Vector2(-66, -1)
+target_position = Vector2(-53, 0)
 collision_mask = 2
 
 [node name="TopandBottomDetector" type="RayCast2D" parent="."]
-target_position = Vector2(0, -78)
+target_position = Vector2(0, -76)
 collision_mask = 2
 
 [node name="HealthBarBackground" type="ColorRect" parent="."]
 offset_left = -62.0
-offset_top = -80.0
+offset_top = -90.0
 offset_right = 66.0
-offset_bottom = -61.0
+offset_bottom = -71.0
 color = Color(0, 0, 0, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="HealthBar" type="ColorRect" parent="."]
 offset_left = -59.0
-offset_top = -76.0
+offset_top = -86.0
 offset_right = 61.0
-offset_bottom = -66.0
+offset_bottom = -76.0
 color = Color(0.263748, 0.586533, 0, 1)
 metadata/_edit_use_anchors_ = true
 
@@ -130,7 +131,7 @@ one_shot = true
 one_shot = true
 
 [node name="Alert" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -113)
+position = Vector2(0, -123)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_aj5qo")
 

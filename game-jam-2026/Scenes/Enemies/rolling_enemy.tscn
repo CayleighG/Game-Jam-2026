@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://Scripts/Enemies/rolling_enemy.gd" id="1_5jcec"]
 [ext_resource type="Texture2D" uid="uid://6351do0c58g7" path="res://PNGs/Enemies/roller_attack.png" id="2_tjbbo"]
-[ext_resource type="Texture2D" uid="uid://bjfvrsn2pvw12" path="res://PNGs/Enemies/roller_idle.png" id="3_osvel"]
+[ext_resource type="Texture2D" uid="uid://bxaemwr1wt7i4" path="res://PNGs/Enemies/rolling_enemy.png" id="3_eo7a3"]
 [ext_resource type="Texture2D" uid="uid://by8ty1d2c2qv2" path="res://PNGs/Enemies/alert.png" id="4_c374u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7qjub"]
-size = Vector2(126, 115)
+size = Vector2(71, 149)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_3ce0h"]
 animations = [{
@@ -20,7 +20,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_osvel")
+"texture": ExtResource("3_eo7a3")
 }],
 "loop": true,
 "name": &"idle",
@@ -40,16 +40,17 @@ animations = [{
 
 [node name="rolling_enemy" type="CharacterBody2D"]
 collision_layer = 4
-collision_mask = 2
+collision_mask = 6
 script = ExtResource("1_5jcec")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, 7.5)
+position = Vector2(-10.5, 7.5)
 shape = SubResource("RectangleShape2D_7qjub")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_3ce0h")
-animation = &"attack"
+animation = &"idle"
 
 [node name="WallDetector" type="RayCast2D" parent="."]
 target_position = Vector2(-66, -1)
@@ -60,17 +61,17 @@ target_position = Vector2(0, -78)
 collision_mask = 2
 
 [node name="HealthBarBackground" type="ColorRect" parent="."]
-offset_left = -62.0
-offset_top = -80.0
-offset_right = 66.0
-offset_bottom = -61.0
+offset_left = -63.0
+offset_top = -95.0
+offset_right = 65.0
+offset_bottom = -76.0
 color = Color(0, 0, 0, 1)
 
 [node name="HealthBar" type="ColorRect" parent="."]
-offset_left = -59.0
-offset_top = -76.0
-offset_right = 61.0
-offset_bottom = -66.0
+offset_left = -60.0
+offset_top = -91.0
+offset_right = 60.0
+offset_bottom = -81.0
 color = Color(0.263748, 0.586533, 0, 1)
 
 [node name="View" type="Node2D" parent="."]
@@ -137,7 +138,7 @@ one_shot = true
 [node name="DashTimer" type="Timer" parent="."]
 
 [node name="Alert" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -113)
+position = Vector2(-1, -128)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_hirpm")
 
