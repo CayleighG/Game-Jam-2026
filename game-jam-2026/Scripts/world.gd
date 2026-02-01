@@ -144,25 +144,25 @@ func _on_sniper_enemy_sniper_fire(enemyPosition) -> void:
 # This function deletes doors if specific requirements have been met
 func checkEnemies():
 	enemyCount -= 1
-	if !door1Open and !$Enemy1 and is_instance_valid($Doors/Door1):
+	if !door1Open and (get_node_or_null("Enemy1") == null) and is_instance_valid($Doors/Door1):
 		door1Open = true
 		$Doors/Door1.queue_free()
-	elif !door2Open and !is_instance_valid($rolling_enemy) and is_instance_valid($Doors/Door2):
+	elif !door2Open and (get_node_or_null("rolling_enemy") == null) and is_instance_valid($Doors/Door2):
 		door2Open = true
 		$Doors/Door2.queue_free()
-	elif !door3Open and !is_instance_valid($rolling_enemy2) and !is_instance_valid($Enemy2) and is_instance_valid($Doors/Door3):
+	elif !door3Open and (get_node_or_null("rolling_enemy2") == null) and (get_node_or_null("Enemy2") == null) and is_instance_valid($Doors/Door3):
 		door3Open = true
 		$Doors/Door3.queue_free()
-	elif !door4Open and !is_instance_valid($Enemy3) and !is_instance_valid($Enemy4) and !is_instance_valid($TankEnemy2) and !is_instance_valid($SniperEnemy4) and is_instance_valid($Doors/Door4):
+	elif !door4Open and (get_node_or_null("Enemy3") == null) and (get_node_or_null("Enemy4") == null) and (get_node_or_null("TankEnemy2") == null) and (get_node_or_null("SniperEnemy4") == null) and is_instance_valid($Doors/Door4):
 		door4Open = true
 		$Doors/Door4.queue_free()
-	elif !door5Open and !is_instance_valid($Enemy5) and !is_instance_valid($rolling_enemy3) and !is_instance_valid($TankEnemy) and !is_instance_valid($Doors/Door4) and is_instance_valid($Doors/Door5):
+	elif !door5Open and (get_node_or_null("Enemy5") == null) and (get_node_or_null("rolling_enemy3") == null) and (get_node_or_null("TankEnemy") == null) and !is_instance_valid($Doors/Door4) and is_instance_valid($Doors/Door5):
 		door5Open = true
 		$Doors/Door5.queue_free()
-	elif !door6Open and !is_instance_valid($SniperEnemy) and !is_instance_valid($SniperEnemy2) and !is_instance_valid($SniperEnemy5) and is_instance_valid($Doors/Door6):
+	elif !door6Open and (get_node_or_null("SniperEnemy") == null) and (get_node_or_null("SniperEnemy2") == null) and (get_node_or_null("SniperEnemy5") == null) and is_instance_valid($Doors/Door6):
 		door6Open = true
 		$Doors/Door6.queue_free()
-	elif !door7Open and !is_instance_valid($rolling_enemy4) and is_instance_valid($Doors/Door7):
+	elif !door7Open and (get_node_or_null("rolling_enemy4") == null) and is_instance_valid($Doors/Door7):
 		door7Open = true
 		$Doors/Door7.queue_free()
 		
